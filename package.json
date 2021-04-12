@@ -1,0 +1,29 @@
+{
+  "name": "av-devices-setup",
+  "version": "1.0.0",
+  "description": "React component to select & test audio / video devices through the browser API",
+  "main": "index.js",
+  "scripts": {
+    "build": "",
+    "lint": "",
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xxxxxxx"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "react",
+    "audio",
+    "video",
+    "microphone",
+    "camera",
+    "react-component"
+  ],
+  "author": "lowlandjuju",
+  "license": "MIT"
+}
