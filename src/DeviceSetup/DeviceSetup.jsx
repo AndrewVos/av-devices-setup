@@ -1,6 +1,7 @@
 import DeviceTypeIcon from './DeviceTypeIcon'
 import AudioInputSetup from '../AudioInputSetup/AudioInputSetup'
-import RrButton from "../AVDevicesSetup/RrButton";
+import VideoInputSetup from '../VideoInputSetup/VideoInputSetup'
+import RrButton from '../AVDevicesSetup/RrButton'
 import { validateDeviceConfig } from '../helpers'
 
 const DeviceSetup = ({ deviceType, onComplete, configuredDevice }) => {
@@ -26,6 +27,15 @@ const DeviceSetup = ({ deviceType, onComplete, configuredDevice }) => {
       case 'audioinput':
         return (
           <AudioInputSetup
+            onChange={onChange}
+            onFail={onComplete}
+            onBusy={(b) => setBusy(b)}
+            inputConfig={deviceConfig || configuredDevice}
+          />
+        )
+      case 'videoinput':
+        return (
+          <VideoInputSetup
             onChange={onChange}
             onFail={onComplete}
             onBusy={(b) => setBusy(b)}

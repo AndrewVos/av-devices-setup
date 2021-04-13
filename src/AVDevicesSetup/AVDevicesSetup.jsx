@@ -65,7 +65,12 @@ const AVDevicesSetup = ({ show, requiredDevices, avDevices, onComplete, onCancel
       console.error('Device setup failed for some reason')
     } else {
       setConfiguredDevices([deviceConfig])
+      setCurrentDeviceType(null)
     }
+  }
+
+  const onSelectDevice = (device) => {
+    setCurrentDeviceType(device)
   }
 
   return (
@@ -84,7 +89,9 @@ const AVDevicesSetup = ({ show, requiredDevices, avDevices, onComplete, onCancel
               }
             />
           ) : (
-            <RequiredDevices {...{ configuredDevices, requiredDevices }} />
+            <RequiredDevices
+              {...{ configuredDevices, requiredDevices, onSelectDevice }}
+            />
           )}
         </div>
       </Backdrop>
