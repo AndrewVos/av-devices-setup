@@ -6,7 +6,7 @@
   "module": "esm/index.js",
   "scripts": {
     "build": "babel src/ --out-dir esm/ --ignore **/__tests__,**/__mocks__ --copy-files",
-    "prepack": "yarn run build && rm -rf node_modules",
+    "postinstall": "! [ $npm_config_save_dev ] && echo \"Not Installed as a dependency\" || (yarn run build && rm -rf node_modules)",
     "standalone": "webpack serve",
     "lint": "",
     "test": ""

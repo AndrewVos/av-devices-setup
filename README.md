@@ -28,5 +28,6 @@ To use the component, mount it like this:
 If you want to test the component out, run the example:
 
 ```
+yarn install
 yarn run standalone
 ```
