@@ -64,11 +64,14 @@ export default function VideoInputSetup({ onChange, onFail, onBusy, inputConfig 
     return mediaDevices
   }
 
-  /** Ensure permissions are available */
+  /** Ensure permissions are available & default device available */
+  // TODO: really this should only fail if audio/video permission is denied by the user
+  // at the moment, it also fails if the default (first) device is in use elsewhere
+  // a more intelligent handler would allow the default device to fail and load the next one
   const init = async () => {
     const mediaStream = await getPermissions({ video: true, audio: false })
-    if (!mediaStream) {
-      onFail()
+    if (!mediaStream.id) {
+      onFail(null, mediaStream)
       return false
     } else return true
   }

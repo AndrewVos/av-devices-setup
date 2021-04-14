@@ -5,7 +5,7 @@ import { AUDIO_INPUT_OPTIONS } from './constants';
  * @returns {Promise<MediaStream>}
  */
 
-const getPermissions = required => navigator.mediaDevices.getUserMedia(required).catch(() => false);
+const getPermissions = required => navigator.mediaDevices.getUserMedia(required).catch(err => err);
 /**
  * Return available devices, filtered by type and direction. Doesn't return default devices as it
  * interferes with USB hot plugging

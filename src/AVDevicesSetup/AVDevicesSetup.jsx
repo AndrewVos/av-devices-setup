@@ -4,6 +4,7 @@ import AVDSTitle from './AVDSTitle'
 import RequiredDevices from './RequiredDevices'
 import DeviceSetup from '../DeviceSetup'
 import { getMediaDevicesList } from '../helpers'
+import DeviceError from './DeviceError'
 
 /**
  * For now this component works with a single required device of type 'audioinput', so requiredDevices must
@@ -29,6 +30,7 @@ const AVDevicesSetup = ({
     multiple ? null : requiredDevices[0]
   )
   const [userAvDevices, setUserAvDevices] = useCookie('avDevices')
+  const [deviceError, setDeviceError] = useState()
 
   /** Lookup cookie to see if device config stored there */
   useEffect(() => {
@@ -67,8 +69,8 @@ const AVDevicesSetup = ({
   /** Runs every time a device is configured within DeviceSetup component */
   const onDeviceConfigured = (deviceConfig, error) => {
     if (error || !deviceConfig) {
-      // TODO: handle it
-      console.error('Device setup failed for some reason')
+      if (multiple) setCurrentDeviceType(null)
+      setDeviceError(error)
     } else {
       setConfiguredDevices(
         configuredDevices
@@ -91,8 +93,10 @@ const AVDevicesSetup = ({
   }
 
   const onClickClose = () => {
-    if (!!currentDeviceType && multiple) setCurrentDeviceType(null)
-    else onCancel()
+    setDeviceError(null)
+    if (!!currentDeviceType && multiple) {
+      setCurrentDeviceType(null)
+    } else onCancel()
   }
 
   return (
@@ -100,7 +104,12 @@ const AVDevicesSetup = ({
       <Backdrop open={show} classes={{ root: 'avds-backdrop' }}>
         <div className="avds-card">
           <AVDSTitle onClose={() => onClickClose()} deviceType={currentDeviceType} />
-          {currentDeviceType ? (
+          {deviceError ? (
+            <DeviceError
+              error={deviceError.toString()}
+              onClear={() => setDeviceError(null)}
+            />
+          ) : currentDeviceType ? (
             <DeviceSetup
               deviceType={currentDeviceType}
               onComplete={onDeviceConfigured}

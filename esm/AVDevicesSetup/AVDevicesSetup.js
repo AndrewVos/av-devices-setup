@@ -4,6 +4,7 @@ import AVDSTitle from './AVDSTitle';
 import RequiredDevices from './RequiredDevices';
 import DeviceSetup from '../DeviceSetup';
 import { getMediaDevicesList } from '../helpers';
+import DeviceError from './DeviceError';
 /**
  * For now this component works with a single required device of type 'audioinput', so requiredDevices must
  * be equal to ['audioinput'].
@@ -27,6 +28,7 @@ const AVDevicesSetup = ({
   const [configuredDevices, setConfiguredDevices] = useState(avDevices || []);
   const [currentDeviceType, setCurrentDeviceType] = useState(multiple ? null : requiredDevices[0]);
   const [userAvDevices, setUserAvDevices] = useCookie('avDevices');
+  const [deviceError, setDeviceError] = useState();
   /** Lookup cookie to see if device config stored there */
 
   useEffect(() => {
@@ -59,8 +61,8 @@ const AVDevicesSetup = ({
 
   const onDeviceConfigured = (deviceConfig, error) => {
     if (error || !deviceConfig) {
-      // TODO: handle it
-      console.error('Device setup failed for some reason');
+      if (multiple) setCurrentDeviceType(null);
+      setDeviceError(error);
     } else {
       setConfiguredDevices(configuredDevices.filter(item => item.device.kind !== deviceConfig.device.kind).concat([deviceConfig]));
       if (multiple) setCurrentDeviceType(null);
@@ -80,7 +82,11 @@ const AVDevicesSetup = ({
   };
 
   const onClickClose = () => {
-    if (!!currentDeviceType && multiple) setCurrentDeviceType(null);else onCancel();
+    setDeviceError(null);
+
+    if (!!currentDeviceType && multiple) {
+      setCurrentDeviceType(null);
+    } else onCancel();
   };
 
   return show && /*#__PURE__*/React.createElement(Backdrop, {
@@ -93,7 +99,10 @@ const AVDevicesSetup = ({
   }, /*#__PURE__*/React.createElement(AVDSTitle, {
     onClose: () => onClickClose(),
     deviceType: currentDeviceType
-  }), currentDeviceType ? /*#__PURE__*/React.createElement(DeviceSetup, {
+  }), deviceError ? /*#__PURE__*/React.createElement(DeviceError, {
+    error: deviceError.toString(),
+    onClear: () => setDeviceError(null)
+  }) : currentDeviceType ? /*#__PURE__*/React.createElement(DeviceSetup, {
     deviceType: currentDeviceType,
     onComplete: onDeviceConfigured,
     configuredDevice: configuredDevices.filter(config => config.device.kind === currentDeviceType)[0]
