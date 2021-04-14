@@ -11,10 +11,11 @@ export default function VideoInputSetup({ onChange, onFail, onBusy, inputConfig 
   const [error, setError] = useState(null)
   const [stream, setStream] = useState(null)
   const [selected, setSelected_] = useState(null)
+  const [constraints, setConstraints] = useState(null)
 
   /** Update parent component on parameter changes */
   useEffect(() => {
-    if (!!selected) onChange({ device: selected })
+    if (!!selected) onChange({ device: selected, constraints })
   }, [selected])
 
   function stopMediaTracks() {
@@ -27,12 +28,12 @@ export default function VideoInputSetup({ onChange, onFail, onBusy, inputConfig 
     if (stream !== null) {
       stopMediaTracks()
     }
-    const constraints = {
+    const newConstraints = {
       video: { deviceId: { exact: deviceId } },
       audio: false,
     }
     navigator.mediaDevices
-      .getUserMedia(constraints)
+      .getUserMedia(newConstraints)
       .then((stream) => {
         const video = document.getElementById('video-preview')
         setStream(stream)
@@ -41,7 +42,8 @@ export default function VideoInputSetup({ onChange, onFail, onBusy, inputConfig 
           devices.forEach(function (device) {
             if (device.deviceId === deviceId) {
               setSelected_(device)
-              onChange({ device })
+              setConstraints(newConstraints)
+              onChange({ device, constraints: newConstraints })
             }
           })
         })
@@ -88,7 +90,7 @@ export default function VideoInputSetup({ onChange, onFail, onBusy, inputConfig 
   return (
     <div className="box no-padding no-border">
       <video
-        autoPlay="true"
+        autoPlay={true}
         id="video-preview"
         style={{ width: '300px', height: '200px' }}
       ></video>
@@ -101,7 +103,11 @@ export default function VideoInputSetup({ onChange, onFail, onBusy, inputConfig 
           >
             <option value={null}>--- Default ---</option>
             {available.map((device) => {
-              return <option value={device.deviceId}>{device.label}</option>
+              return (
+                <option value={device.deviceId} key={device.deviceId}>
+                  {device.label}
+                </option>
+              )
             })}
           </select>
         </div>

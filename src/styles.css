@@ -61,6 +61,9 @@
 .row.vertical-padding {
   padding: 15px 0px;
 }
+.row.padded {
+  padding: 48px 24px 0;
+}
 
 /* Typography */
 * {
@@ -113,6 +116,12 @@ p.full-width {
 .button img.svg {
   height: 30px;
   width: 30px;
+}
+.button.disabled,
+.button:disabled {
+  background: #e7e9ec;
+  color: #8792a2;
+  pointer-events: none;
 }
 .rr-button {
   max-height: 17px;

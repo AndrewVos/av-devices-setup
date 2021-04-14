@@ -15,7 +15,14 @@ import { getMediaDevicesList } from '../helpers'
  * @returns {JSX.Element}
  * @constructor
  */
-const AVDevicesSetup = ({ show, requiredDevices, avDevices, onComplete, onCancel }) => {
+const AVDevicesSetup = ({
+  show,
+  requiredDevices,
+  avDevices,
+  onComplete,
+  onCancel,
+  persist,
+}) => {
   const multiple = requiredDevices?.length > 1
   const [configuredDevices, setConfiguredDevices] = useState(avDevices || [])
   const [currentDeviceType, setCurrentDeviceType] = useState(
@@ -51,11 +58,10 @@ const AVDevicesSetup = ({ show, requiredDevices, avDevices, onComplete, onCancel
     const valid = requiredDevices.every((deviceType) =>
       configuredDevices.map((d) => d.device.kind).includes(deviceType)
     )
-    if (valid && !multiple) {
-      setUserAvDevices(JSON.stringify(configuredDevices))
-      onComplete(configuredDevices)
+    if (valid && !multiple) onSetupComplete()
+    else {
+      setCurrentDeviceType(!multiple && requiredDevices[0])
     }
-    if (valid && multiple) setCurrentDeviceType(null)
   }, [configuredDevices])
 
   /** Runs every time a device is configured within DeviceSetup component */
@@ -64,20 +70,36 @@ const AVDevicesSetup = ({ show, requiredDevices, avDevices, onComplete, onCancel
       // TODO: handle it
       console.error('Device setup failed for some reason')
     } else {
-      setConfiguredDevices([deviceConfig])
-      setCurrentDeviceType(null)
+      setConfiguredDevices(
+        configuredDevices
+          .filter((item) => item.device.kind !== deviceConfig.device.kind)
+          .concat([deviceConfig])
+      )
+      if (multiple) setCurrentDeviceType(null)
     }
+  }
+
+  /** Runs when all required devices have been configured */
+  const onSetupComplete = () => {
+    // Only save to cookies if persistence enabled
+    if (persist) setUserAvDevices(JSON.stringify(configuredDevices))
+    onComplete(configuredDevices)
   }
 
   const onSelectDevice = (device) => {
     setCurrentDeviceType(device)
   }
 
+  const onClickClose = () => {
+    if (!!currentDeviceType && multiple) setCurrentDeviceType(null)
+    else onCancel()
+  }
+
   return (
     show && (
       <Backdrop open={show} classes={{ root: 'avds-backdrop' }}>
         <div className="avds-card">
-          <AVDSTitle onClose={() => onCancel()} deviceType={currentDeviceType} />
+          <AVDSTitle onClose={() => onClickClose()} deviceType={currentDeviceType} />
           {currentDeviceType ? (
             <DeviceSetup
               deviceType={currentDeviceType}
@@ -90,7 +112,7 @@ const AVDevicesSetup = ({ show, requiredDevices, avDevices, onComplete, onCancel
             />
           ) : (
             <RequiredDevices
-              {...{ configuredDevices, requiredDevices, onSelectDevice }}
+              {...{ configuredDevices, requiredDevices, onSelectDevice, onComplete }}
             />
           )}
         </div>
