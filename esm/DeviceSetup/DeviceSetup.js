@@ -1,6 +1,7 @@
 import DeviceTypeIcon from './DeviceTypeIcon';
 import AudioInputSetup from '../AudioInputSetup/AudioInputSetup';
-import RrButton from "../AVDevicesSetup/RrButton";
+import VideoInputSetup from '../VideoInputSetup/VideoInputSetup';
+import RrButton from '../AVDevicesSetup/RrButton';
 import { validateDeviceConfig } from '../helpers';
 
 const DeviceSetup = ({
@@ -28,6 +29,14 @@ const DeviceSetup = ({
     switch (deviceType) {
       case 'audioinput':
         return /*#__PURE__*/React.createElement(AudioInputSetup, {
+          onChange: onChange,
+          onFail: onComplete,
+          onBusy: b => setBusy(b),
+          inputConfig: deviceConfig || configuredDevice
+        });
+
+      case 'videoinput':
+        return /*#__PURE__*/React.createElement(VideoInputSetup, {
           onChange: onChange,
           onFail: onComplete,
           onBusy: b => setBusy(b),

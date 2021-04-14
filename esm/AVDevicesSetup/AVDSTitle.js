@@ -5,6 +5,12 @@ const getTitle = deviceType => {
   switch (deviceType) {
     case 'audioinput':
       return 'Set up your microphone';
+
+    case 'videoinput':
+      return 'Set up your webcam';
+
+    default:
+      return 'Setup your devices';
   }
 };
 

@@ -1,5 +1,5 @@
 import { getPermissions, getMediaDevicesList, reduceMediaDeviceInfo, getSupportedConstraints } from '../helpers';
-import MuiSelect from "../AVDevicesSetup/MuiSelect";
+import MuiSelect from '../AVDevicesSetup/MuiSelect';
 import AudioInputTest from './AudioInputTest';
 import AudioInputVolumeMonitor from './AudioInputVolumeMonitor';
 import InputAdvice from '../DeviceSetup/InputAdvice';

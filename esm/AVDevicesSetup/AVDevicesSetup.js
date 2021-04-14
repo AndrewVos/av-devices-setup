@@ -20,7 +20,8 @@ const AVDevicesSetup = ({
   requiredDevices,
   avDevices,
   onComplete,
-  onCancel
+  onCancel,
+  persist
 }) => {
   const multiple = (requiredDevices == null ? void 0 : requiredDevices.length) > 1;
   const [configuredDevices, setConfiguredDevices] = useState(avDevices || []);
@@ -50,13 +51,9 @@ const AVDevicesSetup = ({
 
   useEffect(() => {
     const valid = requiredDevices.every(deviceType => configuredDevices.map(d => d.device.kind).includes(deviceType));
-
-    if (valid && !multiple) {
-      setUserAvDevices(JSON.stringify(configuredDevices));
-      onComplete(configuredDevices);
+    if (valid && !multiple) onSetupComplete();else {
+      setCurrentDeviceType(!multiple && requiredDevices[0]);
     }
-
-    if (valid && multiple) setCurrentDeviceType(null);
   }, [configuredDevices]);
   /** Runs every time a device is configured within DeviceSetup component */
 
@@ -65,8 +62,25 @@ const AVDevicesSetup = ({
       // TODO: handle it
       console.error('Device setup failed for some reason');
     } else {
-      setConfiguredDevices([deviceConfig]);
+      setConfiguredDevices(configuredDevices.filter(item => item.device.kind !== deviceConfig.device.kind).concat([deviceConfig]));
+      if (multiple) setCurrentDeviceType(null);
     }
+  };
+  /** Runs when all required devices have been configured */
+
+
+  const onSetupComplete = () => {
+    // Only save to cookies if persistence enabled
+    if (persist) setUserAvDevices(JSON.stringify(configuredDevices));
+    onComplete(configuredDevices);
+  };
+
+  const onSelectDevice = device => {
+    setCurrentDeviceType(device);
+  };
+
+  const onClickClose = () => {
+    if (!!currentDeviceType && multiple) setCurrentDeviceType(null);else onCancel();
   };
 
   return show && /*#__PURE__*/React.createElement(Backdrop, {
@@ -77,7 +91,7 @@ const AVDevicesSetup = ({
   }, /*#__PURE__*/React.createElement("div", {
     className: "avds-card"
   }, /*#__PURE__*/React.createElement(AVDSTitle, {
-    onClose: () => onCancel(),
+    onClose: () => onClickClose(),
     deviceType: currentDeviceType
   }), currentDeviceType ? /*#__PURE__*/React.createElement(DeviceSetup, {
     deviceType: currentDeviceType,
@@ -85,7 +99,9 @@ const AVDevicesSetup = ({
     configuredDevice: configuredDevices.filter(config => config.device.kind === currentDeviceType)[0]
   }) : /*#__PURE__*/React.createElement(RequiredDevices, {
     configuredDevices,
-    requiredDevices
+    requiredDevices,
+    onSelectDevice,
+    onComplete
   })));
 };
 
