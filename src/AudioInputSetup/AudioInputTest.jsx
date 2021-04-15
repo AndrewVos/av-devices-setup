@@ -1,6 +1,6 @@
-import RrButton from "../AVDevicesSetup/RrButton";
+import RrButton from '../AVDevicesSetup/RrButton'
 import DeviceTestProgress from '../DeviceSetup/DeviceTestProgress'
-import { playAudioBlob, recordAudioToBlob } from '../helpers'
+import { playAudioBlob, recordAudioToBlob } from '../web_audio'
 
 const TEST_PERIOD = 5 * 1000 // milliseconds
 const ANIMATE_STEP_SIZE = 3 // % of complete

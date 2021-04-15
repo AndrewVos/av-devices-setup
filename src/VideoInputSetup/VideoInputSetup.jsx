@@ -1,10 +1,10 @@
-import {
-  getPermissions,
-  getMediaDevicesList,
-  reduceMediaDeviceInfo,
-  getSupportedConstraints,
-} from '../helpers'
+import { reduceMediaDeviceInfo } from '../helpers'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import {
+  getMediaDevicesList,
+  getPermissions,
+  getSupportedConstraints,
+} from '../web_audio'
 
 export default function VideoInputSetup({ onChange, onFail, onBusy, inputConfig }) {
   const [available, setAvailable] = useState(null)

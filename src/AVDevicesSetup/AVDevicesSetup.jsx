@@ -1,7 +1,7 @@
 import useCookie from 'react-use-cookie'
 import DeviceSetup from '../DeviceSetup'
-import { getMediaDevicesList } from '../helpers'
 import DeviceError from './DeviceError'
+import { getMediaDevicesList } from '../web_audio'
 
 /**
  * For now this component works with a single required device of type 'audioinput', so requiredDevices must

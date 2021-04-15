@@ -1,15 +1,15 @@
 import { CircularProgress } from '@material-ui/core'
-import {
-  getPermissions,
-  getMediaDevicesList,
-  reduceMediaDeviceInfo,
-  getSupportedConstraints,
-} from '../helpers'
+import { reduceMediaDeviceInfo } from '../helpers'
 import MuiSelect from '../AVDevicesSetup/MuiSelect'
 import AudioInputTest from './AudioInputTest'
 import AudioInputVolumeMonitor from './AudioInputVolumeMonitor'
 import InputAdvice from '../DeviceSetup/InputAdvice'
 import InputConstraints from '../DeviceSetup/InputConstraints'
+import {
+  getMediaDevicesList,
+  getPermissions,
+  getSupportedConstraints,
+} from '../web_audio'
 
 const AUDIO_INPUT_ADVICE = {
   heading: 'How to make the most of your mic',
