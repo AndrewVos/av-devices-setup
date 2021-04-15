@@ -12,7 +12,7 @@ const VideoFeed = () => {
           <div
             style={{
               minHeight: 200,
-              minWidth: 300,
+              minWidth: 400,
               background: '#dfe6ed',
               border: '2px solid #b2bec8',
               display: 'flex',

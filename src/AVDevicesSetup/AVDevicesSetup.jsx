@@ -3,10 +3,11 @@ import { cookieGetDevices } from '../helpers'
 import { DEFAULT_OPTIONS } from '../constants'
 import { AVDeviceContext } from './AVDeviceProvider'
 import { useContext } from 'react'
-import AudioInputSetup from '../AudioInputSetup/AudioInputSetup'
+import AudioInputSelect from '../AudioInputSetup/AudioInputSelect'
 import { Grid } from '@material-ui/core'
 import VideoFeed from './VideoFeed'
 import AudioInputVolumeMonitor from '../AudioInputSetup/AudioInputVolumeMonitor'
+import DeviceSelection from './DeviceSelection'
 
 /**
  * For now this component works with a single required device of type 'audioinput', so requiredDevices must
@@ -30,7 +31,7 @@ const AVDevicesSetup = ({
   const [savedConfig, setSavedConfig] = useCookie('avDevices')
   const [deviceError, setDeviceError] = useState()
 
-  const { setAvData } = useContext(AVDeviceContext)
+  const { avData, setAvData } = useContext(AVDeviceContext)
 
   /** Lookup cookie to see if device config stored there */
   useEffect(() => {
@@ -65,24 +66,35 @@ const AVDevicesSetup = ({
       spacing={2}
       style={{ padding: options.containerPadding, maxWidth: 500 }}
     >
-      <Grid item>
-        <VideoFeed />
-      </Grid>
-      <Grid item>
-        <AudioInputVolumeMonitor barColor={options.soundmeterColor} device={''} />
-      </Grid>
-      <Grid item>
-        <div>selection</div>
-      </Grid>
+      {requiredDevices.includes('videoinput') && (
+        <Grid item>
+          <VideoFeed />
+        </Grid>
+      )}
+      {requiredDevices.includes('audioinput') && (
+        <Grid item>
+          <AudioInputVolumeMonitor
+            barColor={options.soundmeterColor}
+            device={
+              configuredDevices.filter(
+                (device) => device?.device?.kind === 'audioinput'
+              )[0]
+            }
+          />
+        </Grid>
+      )}
+      <DeviceSelection />
       <Grid item>
         <div>advanced</div>
       </Grid>
       <Grid item>
         <div>errors</div>
       </Grid>
-      <Grid item>
-        <div>controls</div>
-      </Grid>
+      {requiredDevices.includes('audioinput') && (
+        <Grid item>
+          <div>controls</div>
+        </Grid>
+      )}
     </Grid>
   )
 }

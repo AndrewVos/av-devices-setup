@@ -20,11 +20,11 @@ const LevelBar = styled(LinearProgress)`
   background-color: #d8dee3 !important;
   & .MuiLinearProgress-root {
     background-color: ${(props) =>
-      props.clip ? 'rgba(255, 0, 0, 0.5)' : props.barcolor};
+      props.clip === 'true' ? 'rgba(255, 0, 0, 0.5)' : props.barcolor};
   }
   & .MuiLinearProgress-bar {
     background-color: ${(props) =>
-      props.clip ? 'rgba(255, 0, 0, 0.5)' : props.barcolor};
+      props.clip === 'true' ? 'rgba(255, 0, 0, 0.5)' : props.barcolor};
   }
 `
 
@@ -96,7 +96,7 @@ class AudioInputVolumeMonitor extends React.Component {
             <LevelBar
               variant="determinate"
               value={Math.min(soundLevel * 150, 100)}
-              clip={clipping}
+              clip={clipping.toString()}
               barcolor={this.props.barColor}
             />
           </div>
@@ -107,7 +107,7 @@ class AudioInputVolumeMonitor extends React.Component {
 }
 
 AudioInputVolumeMonitor.propTypes = {
-  color: PropTypes.string.isRequired,
+  barColor: PropTypes.string.isRequired,
   device: PropTypes.object,
 }
 

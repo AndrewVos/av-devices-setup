@@ -4,12 +4,34 @@
 * {
   font-family: proxima-nova, sans-serif;
 }
+
 select {
+  border: 2px solid #c5ced6;
+  box-sizing: border-box;
+  box-shadow: 2px 10px 40px rgba(20, 50, 182, 0.01);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 2px;
 }
+select:focus {
+  border: 2px solid #2849d6;
+  outline: none;
+}
+select::placeholder {
+  color: #8792a2;
+  font-weight: 300;
+}
+select.block {
+  width: 100%;
+}
+
 p.input-label {
   font-size: 13px;
   font-weight: bold;
   margin: 0;
+  padding-left: 2px;
 }
 
 /* Buttons */
