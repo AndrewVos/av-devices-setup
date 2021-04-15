@@ -1,4 +1,3 @@
-import DeviceTypeIcon from './DeviceTypeIcon'
 import AudioInputSetup from '../AudioInputSetup/AudioInputSetup'
 import VideoInputSetup from '../VideoInputSetup/VideoInputSetup'
 import RrButton from '../AVDevicesSetup/RrButton'
@@ -52,20 +51,9 @@ const DeviceSetup = ({ deviceType, onComplete, configuredDevice }) => {
   return (
     <div className="box clear">
       <div className="row">
-        <div className="column no-margin">
-          <DeviceTypeIcon type={deviceType} />
-        </div>
         <div className="column remaining">
           <div className="avds-controls-card">{getSetupControls()}</div>
         </div>
-      </div>
-      <div className="row justify-flex-end">
-        <RrButton
-          title="save"
-          type="primary"
-          disabled={!valid || busy}
-          onClick={() => onComplete(deviceConfig)}
-        />
       </div>
     </div>
   )

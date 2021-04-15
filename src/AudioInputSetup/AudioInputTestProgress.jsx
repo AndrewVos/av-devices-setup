@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box'
 import RecIcon from '@material-ui/icons/FiberManualRecord'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 
-const DeviceTestProgress = ({ testState = 'recording', progress }) => {
+const AudioInputTestProgress = ({ testState = 'recording', progress }) => {
   const iconClass = 'avds-device-test-progress-circle'
   const iconStyle = { height: 18, width: 18 }
 
@@ -47,4 +47,4 @@ const DeviceTestProgress = ({ testState = 'recording', progress }) => {
   )
 }
 
-export default DeviceTestProgress
+export default AudioInputTestProgress

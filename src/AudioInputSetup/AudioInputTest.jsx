@@ -1,5 +1,5 @@
 import RrButton from '../AVDevicesSetup/RrButton'
-import DeviceTestProgress from '../DeviceSetup/DeviceTestProgress'
+import AudioInputTestProgress from './AudioInputTestProgress'
 import { playAudioBlob, recordAudioToBlob } from '../web_audio'
 
 const TEST_PERIOD = 5 * 1000 // milliseconds
@@ -83,7 +83,7 @@ const AudioInputTest = ({ device, onChange, constraints }) => {
         />
       </div>
       <div className="column remaining">
-        <DeviceTestProgress progress={progress} testState={testState} />
+        <AudioInputTestProgress progress={progress} testState={testState} />
       </div>
     </div>
   )

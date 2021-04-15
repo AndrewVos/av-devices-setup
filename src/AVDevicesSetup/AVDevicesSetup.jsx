@@ -1,13 +1,11 @@
 import useCookie from 'react-use-cookie'
 import DeviceSetup from '../DeviceSetup'
 import DeviceError from './DeviceError'
-import { getMediaDevicesList } from '../web_audio'
 import { cookieGetDevices } from '../helpers'
 
 /**
  * For now this component works with a single required device of type 'audioinput', so requiredDevices must
  * be equal to ['audioinput'].
- * @param show - Display component backdrop element
  * @param requiredDevices - [String] of device types, e.g. ['audioinput', 'videoinput', ...]
  * @param avDevices - Object { audioinput: deviceConfig, ... }
  * @param onChange - Function, runs every time a new device is selected
@@ -16,19 +14,8 @@ import { cookieGetDevices } from '../helpers'
  * @returns {JSX.Element}
  * @constructor
  */
-const AVDevicesSetup = ({
-  show,
-  requiredDevices,
-  avDevices,
-  onChange,
-  persist,
-  options,
-}) => {
-  const multiple = requiredDevices?.length > 1
+const AVDevicesSetup = ({ requiredDevices, avDevices, onChange, persist, options }) => {
   const [configuredDevices, setConfiguredDevices] = useState(avDevices || [])
-  const [currentDeviceType, setCurrentDeviceType] = useState(
-    multiple ? null : requiredDevices[0]
-  )
   const [savedConfig, setSavedConfig] = useCookie('avDevices')
   const [deviceError, setDeviceError] = useState()
 
@@ -45,15 +32,9 @@ const AVDevicesSetup = ({
     }
   }, [])
 
-  /** TEMP: load first required device */
-  useEffect(() => {
-    setCurrentDeviceType(requiredDevices[0])
-  }, [])
-
   /** Runs every time a device is selected within a DeviceSetup component */
   const onDeviceSelected = (deviceConfig, error) => {
     if (error || !deviceConfig) {
-      if (multiple) setCurrentDeviceType(null)
       setDeviceError(error)
     } else {
       setConfiguredDevices(
@@ -61,31 +42,16 @@ const AVDevicesSetup = ({
           .filter((item) => item.device.kind !== deviceConfig.device.kind)
           .concat([deviceConfig])
       )
-      if (multiple) setCurrentDeviceType(null)
     }
   }
 
   return (
-    show && (
-      <div className="avds-card">
-        {deviceError ? (
-          <DeviceError
-            error={deviceError.toString()}
-            onClear={() => setDeviceError(null)}
-          />
-        ) : (
-          <DeviceSetup
-            deviceType={currentDeviceType}
-            onComplete={onDeviceSelected}
-            configuredDevice={
-              configuredDevices.filter(
-                (config) => config.device.kind === currentDeviceType
-              )[0]
-            }
-          />
-        )}
-      </div>
-    )
+    <div className="avds-card">
+      <div>video feed</div>
+      <div>signal monitor</div>
+      <div>device selection</div>
+      <div>audio testing</div>
+    </div>
   )
 }
 
