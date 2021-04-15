@@ -4,6 +4,8 @@ import { getSoundMeter } from '../sound_meter'
 
 const T_INTERVAL = 50
 const N_BUFFER = 20
+const SIGNAL_THRESHOLD = 0.0001
+const VARIANCE_THRESHOLD = 0.00000001
 
 class AudioInputVolumeMonitor extends React.Component {
   constructor(props) {
@@ -29,7 +31,10 @@ class AudioInputVolumeMonitor extends React.Component {
           : buffer.concat([soundLevel])
       this.setState({
         buffer: newBuffer,
-        badMic: buffer.length >= N_BUFFER && arrayStats.variance(newBuffer) < 0.00000001,
+        badMic:
+          buffer.length >= N_BUFFER &&
+          arrayStats.variance(newBuffer) < VARIANCE_THRESHOLD &&
+          arrayStats.mean(newBuffer) < SIGNAL_THRESHOLD,
       })
     }
   }
