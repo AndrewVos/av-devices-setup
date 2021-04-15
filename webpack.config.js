@@ -1,19 +1,21 @@
 const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const isDev = process.env.NODE_ENV !== 'production'
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
 module.exports = {
-  mode: isDev ? 'development' : 'production',
-  entry: './example/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'index_bundle.js',
-  },
+  mode: isDevelopment ? 'development' : 'production',
+  entry: { main: './example/index.js' },
   module: {
     rules: [
       { test: /\.js$/, exclude: [/node_modules/], use: 'babel-loader' },
-      { test: /\.jsx$/, exclude: [/node_modules/], use: 'babel-loader' },
+      {
+        test: /\.jsx?$/,
+        include: path.join(__dirname, 'src'),
+        use: 'babel-loader',
+      },
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       {
         test: /\.(png|svg)$/,
@@ -30,8 +32,10 @@ module.exports = {
     ],
   },
   plugins: [
+    isDevelopment && new ReactRefreshPlugin(),
     new HtmlWebpackPlugin({
-      template: 'example/index.html',
+      filename: './index.html',
+      template: './example/index.html',
     }),
     new webpack.ProvidePlugin({
       React: 'react',
@@ -42,7 +46,7 @@ module.exports = {
       classes: 'classnames',
       _: 'lodash',
     }),
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       'av-devices-setup': path.resolve(__dirname, 'src'),
