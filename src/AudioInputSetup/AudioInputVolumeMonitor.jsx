@@ -8,15 +8,11 @@ const N_BUFFER = 20
 const SIGNAL_THRESHOLD = 0.00001
 const VARIANCE_THRESHOLD = 0.000000001
 
-const LevelTitle = styled.p`
-  margin: 0;
-`
-
 const LevelBar = styled(LinearProgress)`
   width: 100%;
   height: 7px !important;
   border-radius: 3px;
-  margin: 3px 0 15px 0;
+  margin: 3px 0 5px 0;
   background-color: #d8dee3 !important;
   & .MuiLinearProgress-root {
     background-color: ${(props) =>

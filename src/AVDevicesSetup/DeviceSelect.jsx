@@ -1,13 +1,13 @@
 import { LinearProgress } from '@material-ui/core'
-import { reduceMediaDeviceInfo } from '../helpers'
-import { getMediaDevicesList, getPermissions } from '../web_audio'
+import { reduceMediaDeviceInfo, getMediaLabel } from '../helpers'
+import { getMediaDevicesList, getPermissions } from '../web_media'
 
-const AudioInputSelect = ({ onChange, onFail, inputConfig }) => {
+const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
   const [selected, setSelected] = useState()
   const [available, setAvailable] = useState([])
 
   const getAvailableDevices = async () => {
-    const mediaDevices = await getMediaDevicesList({ type: 'audio', direction: 'in' })
+    const mediaDevices = await getMediaDevicesList(medium)
     setAvailable(mediaDevices.map((mediaDevice) => reduceMediaDeviceInfo(mediaDevice)))
     return mediaDevices
   }
@@ -17,7 +17,10 @@ const AudioInputSelect = ({ onChange, onFail, inputConfig }) => {
   // at the moment, it also fails if the default (first) device is in use elsewhere
   // a more intelligent handler would allow the default device to fail and load the next one
   const init = async () => {
-    const mediaStream = await getPermissions({ video: false, audio: true })
+    const mediaStream = await getPermissions({
+      video: medium.includes('video'),
+      audio: medium.includes('audio'),
+    })
     if (!mediaStream.id) {
       onFail(null, mediaStream)
       return false
@@ -38,14 +41,14 @@ const AudioInputSelect = ({ onChange, onFail, inputConfig }) => {
 
   /** If device already configured, load values into controls */
   useEffect(() => {
-    if (inputConfig && !_.isEmpty(available)) {
+    if (preselect && !_.isEmpty(available)) {
       setSelected(
-        available.filter((device) => device.deviceId === inputConfig.device.deviceId)[0]
+        available.filter((device) => device.deviceId === preselect.device.deviceId)[0]
       )
     } else {
       setSelected(available[0])
     }
-  }, [available, inputConfig])
+  }, [available, preselect])
 
   const onSelectDevice = (deviceId) => {
     setSelected(available.filter((device) => device.deviceId === deviceId)[0])
@@ -54,7 +57,7 @@ const AudioInputSelect = ({ onChange, onFail, inputConfig }) => {
 
   return (
     <div>
-      <p className="input-label">Microphone</p>
+      <p className="input-label">{getMediaLabel(medium)}</p>
       <select
         className="block"
         disabled={_.isEmpty(available)}
@@ -73,4 +76,4 @@ const AudioInputSelect = ({ onChange, onFail, inputConfig }) => {
   )
 }
 
-export default AudioInputSelect
+export default DeviceSelect

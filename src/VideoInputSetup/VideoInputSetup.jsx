@@ -4,7 +4,7 @@ import {
   getMediaDevicesList,
   getPermissions,
   getSupportedConstraints,
-} from '../web_audio'
+} from '../web_media'
 
 export default function VideoInputSetup({ onChange, onFail, onBusy, inputConfig }) {
   const [available, setAvailable] = useState(null)

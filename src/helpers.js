@@ -1,4 +1,4 @@
-import { getMediaDevicesList } from './web_audio'
+import { getMediaDevicesList } from './web_media'
 
 const validateDeviceConfig = (deviceConfig) =>
   _.keys(_.pick(deviceConfig?.device, ['deviceId', 'kind', 'label'])).length === 3 &&
@@ -64,10 +64,22 @@ const cookieGetDevices = (config, onRetrieveDevice) => {
   })
 }
 
+const getMediaLabel = (medium) => {
+  switch (medium) {
+    case 'audioinput':
+      return 'Microphone'
+    case 'videoinput':
+      return 'Webcam'
+    default:
+      return 'Device'
+  }
+}
+
 export {
   validateDeviceConfig,
   reduceMediaDeviceInfo,
   toTitleCase,
   arrayStats,
   cookieGetDevices,
+  getMediaLabel,
 }

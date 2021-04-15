@@ -3,8 +3,8 @@ import { cookieGetDevices } from '../helpers'
 import { DEFAULT_OPTIONS } from '../constants'
 import { AVDeviceContext } from './AVDeviceProvider'
 import { useContext } from 'react'
-import AudioInputSelect from '../AudioInputSetup/AudioInputSelect'
 import { Grid } from '@material-ui/core'
+import { isMobile } from 'react-device-detect'
 import VideoFeed from './VideoFeed'
 import AudioInputVolumeMonitor from '../AudioInputSetup/AudioInputVolumeMonitor'
 import DeviceSelection from './DeviceSelection'
@@ -63,8 +63,8 @@ const AVDevicesSetup = ({
     <Grid
       container
       direction="column"
-      spacing={2}
-      style={{ padding: options.containerPadding, maxWidth: 500 }}
+      spacing={1}
+      style={{ padding: options.containerPadding, width: isMobile ? 300 : 400 }}
     >
       {requiredDevices.includes('videoinput') && (
         <Grid item>
@@ -72,7 +72,7 @@ const AVDevicesSetup = ({
         </Grid>
       )}
       {requiredDevices.includes('audioinput') && (
-        <Grid item>
+        <Grid item style={{ paddingTop: 10 }}>
           <AudioInputVolumeMonitor
             barColor={options.soundmeterColor}
             device={

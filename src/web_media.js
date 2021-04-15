@@ -11,17 +11,12 @@ export { getPermissions }
  * @param direction - string: 'input' or 'output'
  * @returns {Promise<MediaDeviceInfo[]>}
  */
-const getMediaDevicesList = ({ type, direction } = {}) => {
+const getMediaDevicesList = (medium) => {
   const devices = navigator.mediaDevices.enumerateDevices()
-  if (type || direction) {
+  if (medium) {
     return devices.then((devices) =>
       devices
-        .filter(
-          (device) =>
-            device.kind.includes(type) &&
-            device.kind.includes(direction) &&
-            device.deviceId !== 'default'
-        )
+        .filter((device) => device.kind.includes(medium) && device.deviceId !== 'default')
         .reverse()
     )
   } else {

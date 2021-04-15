@@ -1,6 +1,17 @@
 import { CircularProgress } from '@material-ui/core'
 import { useState } from 'react'
 import { AVDeviceContextConsumer } from './AVDeviceProvider'
+import styled from 'styled-components'
+
+const FeedFrame = styled.div`
+  min-height: 200px;
+  width: 100%;
+  background: #dfe6ed;
+  border: 2px solid #b2bec8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 const VideoFeed = () => {
   const [status, setStatus] = useState('loading')
@@ -9,19 +20,9 @@ const VideoFeed = () => {
     <AVDeviceContextConsumer>
       {({ avData }) => {
         return (
-          <div
-            style={{
-              minHeight: 200,
-              minWidth: 400,
-              background: '#dfe6ed',
-              border: '2px solid #b2bec8',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <FeedFrame>
             {status === 'loading' && <CircularProgress style={{ color: '#bdc3c9' }} />}
-          </div>
+          </FeedFrame>
         )
       }}
     </AVDeviceContextConsumer>
