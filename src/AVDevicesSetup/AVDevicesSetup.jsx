@@ -1,7 +1,4 @@
-import Backdrop from '@material-ui/core/Backdrop'
 import useCookie from 'react-use-cookie'
-import AVDSTitle from './AVDSTitle'
-import RequiredDevices from './RequiredDevices'
 import DeviceSetup from '../DeviceSetup'
 import { getMediaDevicesList } from '../helpers'
 import DeviceError from './DeviceError'
@@ -62,7 +59,7 @@ const AVDevicesSetup = ({
     )
     if (valid && !multiple) onSetupComplete()
     else {
-      setCurrentDeviceType(!multiple && requiredDevices[0])
+      setCurrentDeviceType(requiredDevices[0])
     }
   }, [configuredDevices])
 
@@ -101,31 +98,24 @@ const AVDevicesSetup = ({
 
   return (
     show && (
-      <Backdrop open={show} classes={{ root: 'avds-backdrop' }}>
-        <div className="avds-card">
-          <AVDSTitle onClose={() => onClickClose()} deviceType={currentDeviceType} />
-          {deviceError ? (
-            <DeviceError
-              error={deviceError.toString()}
-              onClear={() => setDeviceError(null)}
-            />
-          ) : currentDeviceType ? (
-            <DeviceSetup
-              deviceType={currentDeviceType}
-              onComplete={onDeviceConfigured}
-              configuredDevice={
-                configuredDevices.filter(
-                  (config) => config.device.kind === currentDeviceType
-                )[0]
-              }
-            />
-          ) : (
-            <RequiredDevices
-              {...{ configuredDevices, requiredDevices, onSelectDevice, onComplete }}
-            />
-          )}
-        </div>
-      </Backdrop>
+      <div className="avds-card">
+        {deviceError ? (
+          <DeviceError
+            error={deviceError.toString()}
+            onClear={() => setDeviceError(null)}
+          />
+        ) : (
+          <DeviceSetup
+            deviceType={currentDeviceType}
+            onComplete={onDeviceConfigured}
+            configuredDevice={
+              configuredDevices.filter(
+                (config) => config.device.kind === currentDeviceType
+              )[0]
+            }
+          />
+        )}
+      </div>
     )
   )
 }
