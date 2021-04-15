@@ -1,3 +1,5 @@
+import { getMediaDevicesList } from './web_audio'
+
 const validateDeviceConfig = (deviceConfig) =>
   _.keys(_.pick(deviceConfig?.device, ['deviceId', 'kind', 'label'])).length === 3 &&
   !!deviceConfig.constraints
@@ -48,4 +50,24 @@ const arrayStats = {
   },
 }
 
-export { validateDeviceConfig, reduceMediaDeviceInfo, toTitleCase, arrayStats }
+const cookieGetDevices = (config, onRetrieveDevice) => {
+  getMediaDevicesList().then((mediaDevices) => {
+    JSON.parse(config).forEach((config) => {
+      if (
+        mediaDevices
+          .map((mediaDevice) => mediaDevice.deviceId)
+          .includes(config.device.deviceId)
+      ) {
+        onRetrieveDevice(config)
+      }
+    })
+  })
+}
+
+export {
+  validateDeviceConfig,
+  reduceMediaDeviceInfo,
+  toTitleCase,
+  arrayStats,
+  cookieGetDevices,
+}
