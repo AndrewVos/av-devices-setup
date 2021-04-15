@@ -1,5 +1,7 @@
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { getSoundMeter } from '../helpers';
+import { getSoundMeter, arrayStats } from '../helpers';
+const T_INTERVAL = 50;
+const N_BUFFER = 20;
 
 class AudioInputVolumeMonitor extends React.Component {
   constructor(props) {
@@ -7,12 +9,28 @@ class AudioInputVolumeMonitor extends React.Component {
     this.state = {
       soundLevel: 0,
       clipping: false,
-      pollRef: null
+      pollRef: null,
+      buffer: [],
+      badMic: false
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.device !== prevProps.device) this.initMonitoring();
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.device !== prevProps.device) {
+      this.initMonitoring();
+    }
+
+    if (this.state.soundLevel !== prevState.soundLevel) {
+      const {
+        buffer,
+        soundLevel
+      } = this.state;
+      const newBuffer = buffer.length > N_BUFFER ? buffer.slice(1, buffer.length).concat([soundLevel]) : buffer.concat([soundLevel]);
+      this.setState({
+        buffer: newBuffer,
+        badMic: buffer.length >= N_BUFFER && arrayStats.variance(newBuffer) < 0.00000001
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -29,15 +47,18 @@ class AudioInputVolumeMonitor extends React.Component {
 
     if (device) {
       clearInterval(pollRef);
-      getSoundMeter(device.deviceId).then(meter => {
+      getSoundMeter({
+        deviceId: (device == null ? void 0 : device.deviceId) || device
+      }).then(meter => {
         const ref = setInterval(() => {
           this.setState({
             soundLevel: meter.volume,
             clipping: meter.checkClipping()
           });
-        }, 50);
+        }, T_INTERVAL);
         this.setState({
-          pollRef: ref
+          pollRef: ref,
+          buffer: []
         });
       });
     }
@@ -46,11 +67,16 @@ class AudioInputVolumeMonitor extends React.Component {
   render() {
     const {
       soundLevel,
-      clipping
+      clipping,
+      badMic
     } = this.state;
     return /*#__PURE__*/React.createElement("div", {
       className: "avds-monitor-volume"
-    }, /*#__PURE__*/React.createElement(LinearProgress, {
+    }, badMic ? /*#__PURE__*/React.createElement("b", {
+      style: {
+        color: 'red'
+      }
+    }, "This microphone looks like it might not be working! Make sure to test it or try a different one") : /*#__PURE__*/React.createElement(LinearProgress, {
       classes: {
         root: `avds-monitor${clipping ? ' clip' : ''}`,
         bar: `avds-monitor-bar${clipping ? ' clip' : ''}`
