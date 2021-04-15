@@ -1,1 +1,1 @@
-export { default as AVDevicesSetup } from './AVDevicesSetup/AVDevicesSetup';
+export { default as AVDevicesSetup } from './AVDevicesSetup'

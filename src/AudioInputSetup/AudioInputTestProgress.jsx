@@ -13,7 +13,7 @@ const AudioInputTestProgress = ({ testState = 'recording', progress }) => {
         size={32}
         thickness={5}
         value={100}
-        variant={'static'}
+        variant="determinate"
         classes={{ root: 'avds-device-test-progress-circle inactive' }}
       />
       {!!testState && (
@@ -22,7 +22,7 @@ const AudioInputTestProgress = ({ testState = 'recording', progress }) => {
             size={32}
             thickness={5}
             value={progress || 0}
-            variant="static"
+            variant="determinate"
             classes={{ root: `avds-device-test-progress-circle ${testState}` }}
           />
           <Box

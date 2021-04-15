@@ -1,7 +1,8 @@
 import useCookie from 'react-use-cookie'
-import DeviceSetup from '../DeviceSetup'
-import DeviceError from './DeviceError'
 import { cookieGetDevices } from '../helpers'
+import { AVDeviceContext } from './AVDeviceProvider'
+import { useContext } from 'react'
+import AudioInputSetup from '../AudioInputSetup/AudioInputSetup'
 
 /**
  * For now this component works with a single required device of type 'audioinput', so requiredDevices must
@@ -18,6 +19,8 @@ const AVDevicesSetup = ({ requiredDevices, avDevices, onChange, persist, options
   const [configuredDevices, setConfiguredDevices] = useState(avDevices || [])
   const [savedConfig, setSavedConfig] = useCookie('avDevices')
   const [deviceError, setDeviceError] = useState()
+
+  const { setAvData } = useContext(AVDeviceContext)
 
   /** Lookup cookie to see if device config stored there */
   useEffect(() => {
@@ -49,7 +52,11 @@ const AVDevicesSetup = ({ requiredDevices, avDevices, onChange, persist, options
     <div className="avds-card">
       <div>video feed</div>
       <div>signal monitor</div>
+      <AudioInputSetup onChange={() => {}} onFail={() => {}} onBusy={() => {}} />
       <div>device selection</div>
+      <div>advanced dropdown (constraints)</div>
+      <div>errors</div>
+
       <div>audio testing</div>
     </div>
   )
