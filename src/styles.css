@@ -4,7 +4,13 @@
 * {
   font-family: proxima-nova, sans-serif;
 }
-select {}
+select {
+}
+p.input-label {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0;
+}
 
 /* Buttons */
 .button {
@@ -134,7 +140,6 @@ p.full-width {
 .icon-button:hover .icon {
   background: #c3dcff;
 }
-
 
 /* AVDS specific */
 .avds-backdrop {

@@ -1,11 +1,32 @@
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { arrayStats } from '../helpers'
 import { getSoundMeter } from '../sound_meter'
+import styled from 'styled-components'
 
 const T_INTERVAL = 50
 const N_BUFFER = 20
 const SIGNAL_THRESHOLD = 0.00001
 const VARIANCE_THRESHOLD = 0.000000001
+
+const LevelTitle = styled.p`
+  margin: 0;
+`
+
+const LevelBar = styled(LinearProgress)`
+  width: 100%;
+  height: 7px !important;
+  border-radius: 3px;
+  margin: 3px 0 15px 0;
+  background-color: #d8dee3 !important;
+  & .MuiLinearProgress-root {
+    background-color: ${(props) =>
+      props.clip ? 'rgba(255, 0, 0, 0.5)' : props.barcolor};
+  }
+  & .MuiLinearProgress-bar {
+    background-color: ${(props) =>
+      props.clip ? 'rgba(255, 0, 0, 0.5)' : props.barcolor};
+  }
+`
 
 class AudioInputVolumeMonitor extends React.Component {
   constructor(props) {
@@ -63,25 +84,31 @@ class AudioInputVolumeMonitor extends React.Component {
   render() {
     const { soundLevel, clipping, badMic } = this.state
     return (
-      <div className="avds-monitor-volume">
+      <div>
         {badMic ? (
-          <b style={{ color: 'red' }}>
+          <small style={{ color: 'red' }}>
             This microphone looks like it might not be working! Make sure to test it or
             try a different one
-          </b>
+          </small>
         ) : (
-          <LinearProgress
-            classes={{
-              root: `avds-monitor${clipping ? ' clip' : ''}`,
-              bar: `avds-monitor-bar${clipping ? ' clip' : ''}`,
-            }}
-            variant="determinate"
-            value={Math.min(soundLevel * 150, 100)}
-          />
+          <div>
+            <p className="input-label">Your volume</p>
+            <LevelBar
+              variant="determinate"
+              value={Math.min(soundLevel * 150, 100)}
+              clip={clipping}
+              barcolor={this.props.barColor}
+            />
+          </div>
         )}
       </div>
     )
   }
+}
+
+AudioInputVolumeMonitor.propTypes = {
+  color: PropTypes.string.isRequired,
+  device: PropTypes.object,
 }
 
 export default AudioInputVolumeMonitor
