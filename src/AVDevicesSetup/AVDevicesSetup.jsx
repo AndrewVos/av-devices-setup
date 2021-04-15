@@ -11,10 +11,19 @@ import { cookieGetDevices } from '../helpers'
  * @param requiredDevices - [String] of device types, e.g. ['audioinput', 'videoinput', ...]
  * @param avDevices - Object { audioinput: deviceConfig, ... }
  * @param onChange - Function, runs every time a new device is selected
+ * @param persist - Boolean, sets whether setup is stored and retrieved from cookie
+ * @param options - Object { styles: { soundmeterColor: '#xxxxxx' } }
  * @returns {JSX.Element}
  * @constructor
  */
-const AVDevicesSetup = ({ show, requiredDevices, avDevices, onChange, persist }) => {
+const AVDevicesSetup = ({
+  show,
+  requiredDevices,
+  avDevices,
+  onChange,
+  persist,
+  options,
+}) => {
   const multiple = requiredDevices?.length > 1
   const [configuredDevices, setConfiguredDevices] = useState(avDevices || [])
   const [currentDeviceType, setCurrentDeviceType] = useState(
