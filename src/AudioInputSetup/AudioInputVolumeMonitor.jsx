@@ -6,7 +6,7 @@ import styled from 'styled-components'
 const T_INTERVAL = 50
 const N_BUFFER = 20
 const SIGNAL_THRESHOLD = 0.00001
-const VARIANCE_THRESHOLD = 0.000000001
+const VARIANCE_THRESHOLD = 0.0000000001
 
 const LevelBar = styled(LinearProgress)`
   width: 100%;
@@ -91,7 +91,7 @@ class AudioInputVolumeMonitor extends React.Component {
             <p className="input-label">Your volume</p>
             <LevelBar
               variant="determinate"
-              value={Math.min(soundLevel * 150, 100)}
+              value={Math.min(soundLevel * 300, 100)}
               clip={clipping.toString()}
               barcolor={this.props.barColor}
             />

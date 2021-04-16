@@ -1,10 +1,20 @@
 import { LinearProgress } from '@material-ui/core'
+import { useEffect } from 'react'
+import styled from 'styled-components'
 import { reduceMediaDeviceInfo, getMediaLabel } from '../helpers'
 import { getMediaDevicesList, getPermissions } from '../web_media'
+
+const ErrorWarn = styled.div`
+  text-align: center;
+  background: #ffcccc;
+  color: #da2e2e;
+  padding: 10px;
+`
 
 const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
   const [selected, setSelected] = useState()
   const [available, setAvailable] = useState([])
+  const [error, setError] = useState()
 
   const getAvailableDevices = async () => {
     const mediaDevices = await getMediaDevicesList(medium)
@@ -22,7 +32,9 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
       audio: medium.includes('audio'),
     })
     if (!mediaStream.id) {
-      onFail(null, mediaStream)
+      setError(mediaStream.toString())
+      console.log(mediaStream)
+      //   onFail(null, mediaStream)
       return false
     } else return true
   }
@@ -42,17 +54,19 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
   /** If device already configured, load values into controls */
   useEffect(() => {
     if (preselect && !_.isEmpty(available)) {
-      setSelected(
-        available.filter((device) => device.deviceId === preselect.device.deviceId)[0]
-      )
+      setSelected(available.filter((device) => device.deviceId === preselect.deviceId)[0])
     } else {
       setSelected(available[0])
     }
   }, [available, preselect])
 
+  useEffect(() => {
+    onChange(selected)
+  }, [selected])
+
   const onSelectDevice = (deviceId) => {
-    setSelected(available.filter((device) => device.deviceId === deviceId)[0])
-    onChange({ device: selected })
+    const newSelected = available.filter((device) => device.deviceId === deviceId)[0]
+    setSelected(newSelected)
   }
 
   return (
@@ -60,16 +74,18 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
       <p className="input-label">{getMediaLabel(medium)}</p>
       <select
         className="block"
-        disabled={_.isEmpty(available)}
+        disabled={_.isEmpty(available) || error}
         onChange={(syntheticEvent) =>
           onSelectDevice(syntheticEvent.nativeEvent.target.value)
         }
       >
         {available.map((item) => (
-          <option value={item.deviceId}>{item.label}</option>
+          <option key={item.deviceId} value={item.deviceId}>
+            {item.label}
+          </option>
         ))}
       </select>
-      {_.isEmpty(available) && (
+      {_.isEmpty(available) && !error && (
         <LinearProgress style={{ marginTop: -5, borderRadius: '0 0 4px 4px' }} />
       )}
     </div>

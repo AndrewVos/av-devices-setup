@@ -16,6 +16,8 @@ const FeedFrame = styled.div`
 const VideoFeed = () => {
   const [status, setStatus] = useState('loading')
 
+  // TODO: all video stream stuff goes here
+
   return (
     <AVDeviceContextConsumer>
       {({ avData }) => {

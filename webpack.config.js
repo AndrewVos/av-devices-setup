@@ -8,6 +8,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 module.exports = {
   mode: isDevelopment ? 'development' : 'production',
   entry: { main: './example/index.js' },
+  devtool: 'eval',
   module: {
     rules: [
       { test: /\.js$/, exclude: [/node_modules/], use: 'babel-loader' },

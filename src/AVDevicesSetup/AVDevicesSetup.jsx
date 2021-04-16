@@ -2,7 +2,7 @@ import useCookie from 'react-use-cookie'
 import { cookieGetDevices } from '../helpers'
 import { DEFAULT_OPTIONS } from '../constants'
 import { AVDeviceContext } from './AVDeviceProvider'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { Grid } from '@material-ui/core'
 import { isMobile } from 'react-device-detect'
 import VideoFeed from './VideoFeed'
@@ -22,42 +22,37 @@ import DeviceSelection from './DeviceSelection'
  */
 const AVDevicesSetup = ({
   requiredDevices,
-  avDevices,
+  preConfigured,
   onChange,
   persist,
   options = DEFAULT_OPTIONS,
 }) => {
-  const [configuredDevices, setConfiguredDevices] = useState(avDevices || [])
   const [savedConfig, setSavedConfig] = useCookie('avDevices')
   const [deviceError, setDeviceError] = useState()
 
-  const { avData, setAvData } = useContext(AVDeviceContext)
+  const { avData, setAvData, upsertDevice } = useContext(AVDeviceContext)
 
   /** Lookup cookie to see if device config stored there */
   useEffect(() => {
-    if (persist && !avDevices && savedConfig)
-      cookieGetDevices(savedConfig, onDeviceSelected)
+    if (persist && !preConfigured && savedConfig)
+      cookieGetDevices(savedConfig, upsertDevice)
   }, [savedConfig])
 
   /** Save configuration to cookie on unmount */
   useEffect(() => {
     return () => {
-      if (persist) setSavedConfig(JSON.stringify(configuredDevices))
+      if (persist) setSavedConfig(JSON.stringify(avData.configuredDevices))
     }
   }, [])
 
-  /** Runs every time a device is selected within a DeviceSetup component */
-  const onDeviceSelected = (deviceConfig, error) => {
-    if (error || !deviceConfig) {
-      setDeviceError(error)
-    } else {
-      setConfiguredDevices(
-        configuredDevices
-          .filter((item) => item.device.kind !== deviceConfig.device.kind)
-          .concat([deviceConfig])
-      )
-    }
-  }
+  /** Save initial data to context */
+  useEffect(() => {
+    setAvData({ ...avData, requiredDevices })
+  }, [])
+
+  useEffect(() => {
+    console.log(avData)
+  }, [avData])
 
   return (
     <Grid
@@ -76,8 +71,8 @@ const AVDevicesSetup = ({
           <AudioInputVolumeMonitor
             barColor={options.soundmeterColor}
             device={
-              configuredDevices.filter(
-                (device) => device?.device?.kind === 'audioinput'
+              avData?.configuredDevices?.filter(
+                (device) => device?.kind === 'audioinput'
               )[0]
             }
           />
