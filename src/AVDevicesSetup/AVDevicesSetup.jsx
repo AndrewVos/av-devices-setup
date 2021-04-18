@@ -27,7 +27,6 @@ const AVDevicesSetup = ({
   options = DEFAULT_OPTIONS,
 }) => {
   const [cookieConfig, setCookieConfig] = useCookie('avDevices')
-  const [deviceError, setDeviceError] = useState()
   const { avData } = useContext(AVDeviceContext)
 
   /** Send update to parent */
@@ -70,12 +69,6 @@ const AVDevicesSetup = ({
         </Grid>
       )}
       <DeviceSelection preselect={initConfig || (persist && JSON.parse(cookieConfig))} />
-      <Grid item>
-        <div>advanced</div>
-      </Grid>
-      <Grid item>
-        <div>errors</div>
-      </Grid>
       {requiredDevices.includes('audioinput') && (
         <Grid item>
           <div>controls</div>

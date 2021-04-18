@@ -1,14 +1,7 @@
 import { LinearProgress } from '@material-ui/core'
-import styled from 'styled-components'
 import { reduceMediaDeviceInfo, getMediaLabel } from '../helpers'
 import { getMediaDevicesList, getPermissions } from '../web_media'
-
-const ErrorWarn = styled.div`
-  text-align: center;
-  background: #ffcccc;
-  color: #da2e2e;
-  padding: 10px;
-`
+import DeviceError from './DeviceError'
 
 const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
   const [selected, setSelected] = useState()
@@ -64,7 +57,12 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
     setSelected(newSelected)
   }
 
-  return (
+  return error ? (
+    <div>
+      <p className="input-label">{getMediaLabel(medium)}</p>
+      <DeviceError error={error} onClear={null} />
+    </div>
+  ) : (
     <div>
       <p className="input-label">{getMediaLabel(medium)}</p>
       <select
