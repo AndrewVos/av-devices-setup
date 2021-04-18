@@ -1,5 +1,4 @@
 import { LinearProgress } from '@material-ui/core'
-import { useEffect } from 'react'
 import styled from 'styled-components'
 import { reduceMediaDeviceInfo, getMediaLabel } from '../helpers'
 import { getMediaDevicesList, getPermissions } from '../web_media'
@@ -18,8 +17,9 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
 
   const getAvailableDevices = async () => {
     const mediaDevices = await getMediaDevicesList(medium)
-    setAvailable(mediaDevices.map((mediaDevice) => reduceMediaDeviceInfo(mediaDevice)))
-    return mediaDevices
+    const devices = mediaDevices.map((mediaDevice) => reduceMediaDeviceInfo(mediaDevice))
+    setAvailable(devices)
+    return devices
   }
 
   /** Ensure permissions are available & default device available */
@@ -33,7 +33,7 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
     })
     if (!mediaStream.id) {
       setError(mediaStream.toString())
-      console.log(mediaStream)
+
       //   onFail(null, mediaStream)
       return false
     } else return true
@@ -42,23 +42,18 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
   /** Initialise, get available audio devices and set USB plug listener */
   useEffect(() => {
     init().then((result) => {
-      if (result) getAvailableDevices()
+      if (result)
+        getAvailableDevices().then((devices) => {
+          if (preselect) setSelected(preselect)
+          else setSelected(devices[0])
+        })
       navigator.mediaDevices.addEventListener('devicechange', () => {
-        getAvailableDevices().then((mediaDevices) => {
-          setSelected(mediaDevices[0])
+        getAvailableDevices().then((devices) => {
+          setSelected(devices[0])
         })
       })
     })
   }, [])
-
-  /** If device already configured, load values into controls */
-  useEffect(() => {
-    if (preselect && !_.isEmpty(available)) {
-      setSelected(available.filter((device) => device.deviceId === preselect.deviceId)[0])
-    } else {
-      setSelected(available[0])
-    }
-  }, [available, preselect])
 
   useEffect(() => {
     onChange(selected)
@@ -78,6 +73,7 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
         onChange={(syntheticEvent) =>
           onSelectDevice(syntheticEvent.nativeEvent.target.value)
         }
+        value={selected?.deviceId}
       >
         {available.map((item) => (
           <option key={item.deviceId} value={item.deviceId}>

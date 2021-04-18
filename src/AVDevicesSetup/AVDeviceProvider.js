@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react'
+import { createContext } from 'react'
+import { validateDevice } from '../helpers'
 const AVDeviceContext = createContext()
 const { Provider, Consumer } = AVDeviceContext
 
@@ -9,10 +10,12 @@ const AVDeviceProvider = ({ children }) => {
   })
 
   const upsertDevice = (device) => {
-    setAvData({
-      ...avData,
-      configuredDevices: _.unionBy([device], avData.configuredDevices, 'kind'),
-    })
+    if (!!device && validateDevice(device)) {
+      setAvData({
+        ...avData,
+        configuredDevices: _.unionBy([device], avData.configuredDevices, 'kind'),
+      })
+    }
   }
 
   return <Provider value={{ avData, setAvData, upsertDevice }}>{children}</Provider>

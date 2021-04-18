@@ -1,8 +1,13 @@
-import { getMediaDevicesList } from './web_media'
+const validateConfig = (requiredDevices, configuredDevices) => {
+  return (
+    requiredDevices.every((requiredDevice) =>
+      configuredDevices.map((d) => d.kind).includes(requiredDevice)
+    ) && configuredDevices.every((device) => validateDevice(device))
+  )
+}
 
-const validateDeviceConfig = (deviceConfig) =>
-  _.keys(_.pick(deviceConfig?.device, ['deviceId', 'kind', 'label'])).length === 3 &&
-  !!deviceConfig.constraints
+const validateDevice = (device) =>
+  !!device && _.keys(_.pick(device, ['deviceId', 'kind', 'label'])).length === 3
 
 const reduceMediaDeviceInfo = (deviceInfo) => {
   const { deviceId, kind, label } = deviceInfo
@@ -50,20 +55,6 @@ const arrayStats = {
   },
 }
 
-const cookieGetDevices = (config, onRetrieveDevice) => {
-  getMediaDevicesList().then((mediaDevices) => {
-    JSON.parse(config).forEach((config) => {
-      if (
-        mediaDevices
-          .map((mediaDevice) => mediaDevice.deviceId)
-          .includes(config.device.deviceId)
-      ) {
-        onRetrieveDevice(config)
-      }
-    })
-  })
-}
-
 const getMediaLabel = (medium) => {
   switch (medium) {
     case 'audioinput':
@@ -76,10 +67,10 @@ const getMediaLabel = (medium) => {
 }
 
 export {
-  validateDeviceConfig,
+  validateConfig,
+  validateDevice,
   reduceMediaDeviceInfo,
   toTitleCase,
   arrayStats,
-  cookieGetDevices,
   getMediaLabel,
 }

@@ -15,15 +15,21 @@ const Modal = styled.div`
 `
 
 function HelloWorld() {
-  const [showSetup, setShowSetup] = React.useState(false)
+  const [showSetup, setShowSetup] = React.useState(true)
 
   return (
     <div className="example-container">
-      <Backdrop open={true} classes={{ root: 'avds-backdrop' }}>
+      {/* <button
+        style={{ position: 'absolute', left: 0, top: 0, zIndex: 100000 }}
+        onClick={() => setShowSetup(!showSetup)}
+      >
+        Toggle
+      </button> */}
+      <Backdrop open={showSetup} classes={{ root: 'avds-backdrop' }}>
         <Modal>
           <AVDevicesSetup
             {...{
-              show: true,
+              persist: false,
               requiredDevices: ['audioinput', 'videoinput'],
               avDevices: null,
               onComplete: null,

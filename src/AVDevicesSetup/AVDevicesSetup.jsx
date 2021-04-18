@@ -1,10 +1,9 @@
 import useCookie from 'react-use-cookie'
-import { cookieGetDevices } from '../helpers'
-import { DEFAULT_OPTIONS } from '../constants'
-import { AVDeviceContext } from './AVDeviceProvider'
-import { useContext, useEffect } from 'react'
 import { Grid } from '@material-ui/core'
 import { isMobile } from 'react-device-detect'
+import { validateConfig } from '../helpers'
+import { DEFAULT_OPTIONS } from '../constants'
+import { AVDeviceContext } from './AVDeviceProvider'
 import VideoFeed from './VideoFeed'
 import AudioInputVolumeMonitor from '../AudioInputSetup/AudioInputVolumeMonitor'
 import DeviceSelection from './DeviceSelection'
@@ -22,36 +21,22 @@ import DeviceSelection from './DeviceSelection'
  */
 const AVDevicesSetup = ({
   requiredDevices,
-  preConfigured,
+  initConfig,
   onChange,
   persist,
   options = DEFAULT_OPTIONS,
 }) => {
-  const [savedConfig, setSavedConfig] = useCookie('avDevices')
+  const [cookieConfig, setCookieConfig] = useCookie('avDevices')
   const [deviceError, setDeviceError] = useState()
+  const { avData } = useContext(AVDeviceContext)
 
-  const { avData, setAvData, upsertDevice } = useContext(AVDeviceContext)
-
-  /** Lookup cookie to see if device config stored there */
+  /** Send update to parent */
+  /** (If persist) Save configuration to cookie on change */
   useEffect(() => {
-    if (persist && !preConfigured && savedConfig)
-      cookieGetDevices(savedConfig, upsertDevice)
-  }, [savedConfig])
-
-  /** Save configuration to cookie on unmount */
-  useEffect(() => {
-    return () => {
-      if (persist) setSavedConfig(JSON.stringify(avData.configuredDevices))
+    if (validateConfig(requiredDevices, avData.configuredDevices)) {
+      if (onChange) onChange(avData.configuredDevices)
+      if (persist) setCookieConfig(JSON.stringify(avData.configuredDevices))
     }
-  }, [])
-
-  /** Save initial data to context */
-  useEffect(() => {
-    setAvData({ ...avData, requiredDevices })
-  }, [])
-
-  useEffect(() => {
-    console.log(avData)
   }, [avData])
 
   return (
@@ -78,7 +63,7 @@ const AVDevicesSetup = ({
           />
         </Grid>
       )}
-      <DeviceSelection />
+      <DeviceSelection preselect={initConfig || (persist && JSON.parse(cookieConfig))} />
       <Grid item>
         <div>advanced</div>
       </Grid>

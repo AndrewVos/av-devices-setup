@@ -1,5 +1,4 @@
 import { CircularProgress } from '@material-ui/core'
-import { useState } from 'react'
 import { AVDeviceContextConsumer } from './AVDeviceProvider'
 import styled from 'styled-components'
 
