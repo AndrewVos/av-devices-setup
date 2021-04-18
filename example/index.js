@@ -10,8 +10,7 @@ const Modal = styled.div`
   padding: 16px;
   border-radius: 6px;
   border: none;
-  background: #f8f9fb;
-  box-shadow: inset 3px 3px 24px rgba(71, 77, 105, 0.18);
+  background: #ffffff;
 `
 
 function HelloWorld() {
