@@ -1,6 +1,7 @@
 import { CircularProgress } from '@material-ui/core'
-import { AVDeviceContextConsumer } from './AVDeviceProvider'
+import { useEffect } from 'react'
 import styled from 'styled-components'
+import { validateDevice } from '../helpers'
 
 const FeedFrame = styled.div`
   min-height: 200px;
@@ -12,21 +13,55 @@ const FeedFrame = styled.div`
   justify-content: center;
 `
 
-const VideoFeed = () => {
-  const [status, setStatus] = useState('loading')
+const Feed = styled.video`
+  width: 100%;
+  outline: 2px solid #b2bec8;
+  display: ${(props) => (props.show ? 'block' : 'none')};
+`
 
-  // TODO: all video stream stuff goes here
+const VideoFeed = ({ device }) => {
+  const [status, setStatus] = useState('loading')
+  const [stream, setStream] = useState()
+
+  function stopMediaTracks() {
+    stream.getTracks().forEach((track) => {
+      track.stop()
+    })
+  }
+
+  useEffect(() => {
+    return () => {
+      stopMediaTracks()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!!stream) {
+      stopMediaTracks()
+    }
+    if (device && validateDevice(device)) {
+      navigator.mediaDevices
+        .getUserMedia({ video: { deviceId: { exact: device.deviceId } } })
+        .then((videoStream) => {
+          const video = document.getElementById('webcam-feed')
+          video.srcObject = videoStream
+          video.addEventListener('canplay', () => {
+            video.play()
+          })
+          setStream(videoStream)
+          setStatus('streaming')
+        })
+        .catch(function () {
+          console.log('Something went wrong!')
+        })
+    }
+  }, [device])
 
   return (
-    <AVDeviceContextConsumer>
-      {({ avData }) => {
-        return (
-          <FeedFrame>
-            {status === 'loading' && <CircularProgress style={{ color: '#bdc3c9' }} />}
-          </FeedFrame>
-        )
-      }}
-    </AVDeviceContextConsumer>
+    <FeedFrame>
+      {status === 'loading' && <CircularProgress style={{ color: '#bdc3c9' }} />}
+      <Feed loop autoplay muted id="webcam-feed" show={status === 'streaming'} />
+    </FeedFrame>
   )
 }
 

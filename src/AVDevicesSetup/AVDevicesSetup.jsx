@@ -48,7 +48,13 @@ const AVDevicesSetup = ({
     >
       {requiredDevices.includes('videoinput') && (
         <Grid item>
-          <VideoFeed />
+          <VideoFeed
+            device={
+              avData?.configuredDevices.filter(
+                (device) => device.kind === 'videoinput'
+              )[0]
+            }
+          />
         </Grid>
       )}
       {requiredDevices.includes('audioinput') && (
