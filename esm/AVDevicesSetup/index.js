@@ -6,14 +6,14 @@ const App = ({
   avDevices,
   onChange,
   persist,
-  options
+  userOptions
 }) => {
   return /*#__PURE__*/React.createElement(AVDeviceProvider, null, /*#__PURE__*/React.createElement(AVDevicesSetup, {
     requiredDevices,
     avDevices,
     onChange,
     persist,
-    options
+    userOptions
   }));
 };
 

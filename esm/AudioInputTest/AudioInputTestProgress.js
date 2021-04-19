@@ -24,11 +24,6 @@ const AudioInputTestProgress = ({
   testState = 'recording',
   progress
 }) => {
-  const iconClass = 'avds-device-test-progress-circle';
-  const iconStyle = {
-    height: 18,
-    width: 18
-  };
   return /*#__PURE__*/React.createElement(TestProgress, {
     className: "avds-device-test-progress"
   }, /*#__PURE__*/React.createElement(CircularProgress, {

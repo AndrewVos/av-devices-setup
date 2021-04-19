@@ -62,7 +62,7 @@ const Button = ({
 
 _c = Button;
 Button.propTypes = {
-  type: PropTypes.oneOf(['primary', 'cancel', ''])
+  type: PropTypes.oneOf(['primary', 'cancel', 'default', 'recording', 'playing'])
 };
 export default Button;
 export { toTitleCase };

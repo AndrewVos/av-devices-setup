@@ -32,7 +32,6 @@ const AudioInputTestContainer = ({
     }
   }, /*#__PURE__*/React.createElement(AudioInputTest, {
     device,
-    onChange: res => console.log(res),
     hideProgress: !expanded
   }))));
 };

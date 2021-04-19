@@ -36,7 +36,7 @@ const AudioInputTest = ({
     setTestState('recording');
     animateProgress();
     recordTestAudio();
-    onChange({
+    if (onChange) onChange({
       testing: true
     });
   };
@@ -44,7 +44,7 @@ const AudioInputTest = ({
   const cancelTest = () => {
     clearInterval(timeFunc);
     setTimeFunc(null);
-    onChange({
+    if (onChange) onChange({
       testing: false
     });
     setTestState('default');
@@ -80,7 +80,7 @@ const AudioInputTest = ({
     playing.then(() => {
       setTestState('default');
       setTestAudio(null);
-      onChange({
+      if (onChange) onChange({
         testing: false
       });
     });
