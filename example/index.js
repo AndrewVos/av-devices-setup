@@ -24,11 +24,7 @@ function HelloWorld() {
       >
         Toggle
       </button> */}
-      <Backdrop
-        open={showSetup}
-        style={{ zIndex: 1000 }}
-        classes={{ root: 'avds-backdrop' }}
-      >
+      <Backdrop open={showSetup} style={{ zIndex: 1000 }}>
         <Modal>
           <AVDevicesSetup
             {...{
@@ -37,6 +33,9 @@ function HelloWorld() {
               avDevices: null,
               onComplete: null,
               onCancel: null,
+              userOptions: {
+                audioTest: { expanded: true },
+              },
             }}
           />
         </Modal>

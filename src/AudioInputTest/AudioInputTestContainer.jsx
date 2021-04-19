@@ -22,9 +22,7 @@ const AudioInputTestContainer = ({ device, expanded }) => {
           xs
           style={{ marginTop: columnLayout ? 10 : -8, marginLeft: columnLayout ? 0 : 8 }}
         >
-          <AudioInputTest
-            {...{ device, onChange: (res) => console.log(res), hideProgress: !expanded }}
-          />
+          <AudioInputTest {...{ device, hideProgress: !expanded }} />
         </Grid>
       </Grid>
     </Container>

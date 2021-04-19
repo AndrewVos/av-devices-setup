@@ -44,7 +44,7 @@ const Button = ({ title, type = '', icon, onClick, disabled, loading, style }) =
 }
 
 Button.propTypes = {
-  type: PropTypes.oneOf(['primary', 'cancel', '']),
+  type: PropTypes.oneOf(['primary', 'cancel', 'default', 'recording', 'playing']),
 }
 
 export default Button

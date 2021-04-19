@@ -27,13 +27,13 @@ const AudioInputTest = ({ device, onChange, constraints, hideProgress }) => {
     setTestState('recording')
     animateProgress()
     recordTestAudio()
-    onChange({ testing: true })
+    if (onChange) onChange({ testing: true })
   }
 
   const cancelTest = () => {
     clearInterval(timeFunc)
     setTimeFunc(null)
-    onChange({ testing: false })
+    if (onChange) onChange({ testing: false })
     setTestState('default')
     setTestAudio(null)
     setProgress(0)
@@ -67,7 +67,7 @@ const AudioInputTest = ({ device, onChange, constraints, hideProgress }) => {
     playing.then(() => {
       setTestState('default')
       setTestAudio(null)
-      onChange({ testing: false })
+      if (onChange) onChange({ testing: false })
     })
   }
 

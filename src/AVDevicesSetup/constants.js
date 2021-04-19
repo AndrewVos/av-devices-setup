@@ -5,7 +5,7 @@ const DEFAULT_OPTIONS = {
   },
   soundMeter: { color: '#1aae9f' },
   containerPadding: 8,
-  audioTest: { expanded: true },
+  audioTest: { expanded: false },
 }
 
 // noinspection JSUnusedLocalSymbols

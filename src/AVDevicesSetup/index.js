@@ -1,10 +1,12 @@
 import { AVDeviceProvider } from './AVDeviceProvider'
 import AVDevicesSetup from './AVDevicesSetup'
 
-const App = ({ requiredDevices, avDevices, onChange, persist, options }) => {
+const App = ({ requiredDevices, avDevices, onChange, persist, userOptions }) => {
   return (
     <AVDeviceProvider>
-      <AVDevicesSetup {...{ requiredDevices, avDevices, onChange, persist, options }} />
+      <AVDevicesSetup
+        {...{ requiredDevices, avDevices, onChange, persist, userOptions }}
+      />
     </AVDeviceProvider>
   )
 }
