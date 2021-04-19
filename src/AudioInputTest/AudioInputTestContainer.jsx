@@ -17,7 +17,11 @@ const AudioInputTestContainer = ({ device }) => {
         <Grid item xs={isMobile ? 12 : 7} style={{ paddingLeft: 2 }}>
           <small>Record yourself saying "hi" so we can make sure it's all working</small>
         </Grid>
-        <Grid item xs>
+        <Grid
+          item
+          xs
+          style={{ marginTop: isMobile ? 10 : -8, marginLeft: isMobile ? 0 : 8 }}
+        >
           <AudioInputTest {...{ device, onChange: (res) => console.log(res) }} />
         </Grid>
       </Grid>

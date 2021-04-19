@@ -1,11 +1,12 @@
 import Button from './Button'
 import AudioInputTestProgress from './AudioInputTestProgress'
 import { playAudioBlob, recordAudioToBlob } from './web_media'
+import { Grid } from '@material-ui/core'
 
 const TEST_PERIOD = 5 * 1000 // milliseconds
 const ANIMATE_STEP_SIZE = 3 // % of complete
 
-const AudioInputTest = ({ device, onChange, constraints, showProgress = true }) => {
+const AudioInputTest = ({ device, onChange, constraints, showProgress }) => {
   const [progress, setProgress] = useState(0)
   const [testState, setTestState] = useState(null)
   const [testAudio, setTestAudio] = useState(null)
@@ -72,22 +73,22 @@ const AudioInputTest = ({ device, onChange, constraints, showProgress = true }) 
   }
 
   return (
-    <div className="row">
-      <div className="column remaining space-right">
+    <Grid container direction="row">
+      <Grid item xs style={{ display: 'flex' }}>
         <Button
-          style={{ minWidth: 100 }}
+          style={{ minWidth: 80, flex: 1, justifyContent: 'center' }}
           title={testState ? 'cancel' : 'test mic'}
           type={testState ? 'cancel' : ''}
           icon={testState ? 'cancel' : 'record'}
           onClick={testState ? cancelTest : beginTest}
         />
-      </div>
+      </Grid>
       {showProgress && (
-        <div className="column remaining">
+        <Grid item xs>
           <AudioInputTestProgress progress={progress} testState={testState} />
-        </div>
+        </Grid>
       )}
-    </div>
+    </Grid>
   )
 }
 
