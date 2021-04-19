@@ -6,7 +6,7 @@ import styled from 'styled-components'
 const T_INTERVAL = 50
 const N_BUFFER = 20
 const SIGNAL_THRESHOLD = 0.00001
-const VARIANCE_THRESHOLD = 0.0000000001
+const VARIANCE_THRESHOLD = 0.00000000001
 
 const LevelBar = styled(LinearProgress)`
   width: 100%;
