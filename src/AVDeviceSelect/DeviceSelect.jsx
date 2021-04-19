@@ -1,7 +1,11 @@
 import { LinearProgress } from '@material-ui/core'
-import { reduceMediaDeviceInfo, getMediaLabel } from '../helpers'
-import { getMediaDevicesList, getPermissions } from '../web_media'
 import DeviceError from './DeviceError'
+import {
+  getMediaDevicesList,
+  getMediaLabel,
+  getPermissions,
+  reduceMediaDeviceInfo,
+} from './helpers'
 
 const DeviceSelect = ({ medium, onChange, preselect }) => {
   const [selected, setSelected] = useState()

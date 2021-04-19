@@ -1,6 +1,18 @@
 import LinearProgress from '@material-ui/core/LinearProgress'
 import MuiCheckbox from './MuiCheckbox'
 
+const DEFAULT_AUDIO_CONSTRAINTS = [
+  'autoGainControl',
+  'echoCancellation',
+  'noiseSuppression',
+]
+
+const getSupportedConstraints = () =>
+  _.pickBy(
+    _.pick(navigator.mediaDevices.getSupportedConstraints(), DEFAULT_AUDIO_CONSTRAINTS),
+    (a) => a
+  )
+
 // TODO: this needs to be refactored to the same pattern as the other components
 // Should take an array of required devices and an array of desired constraints
 // Output checkboxes should reflect convolution of those two arrays

@@ -2,10 +2,17 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import ClearIcon from '@material-ui/icons/Clear'
 import PublishIcon from '@material-ui/icons/Publish'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import { toTitleCase } from "../helpers"
 import classNames from 'classnames'
 import loadingSvg from '../assets/circ-loading.svg'
 import loadingSvgWhite from '../assets/circ-loading-white.svg'
+
+const toTitleCase = (str) => {
+  str = str.toLowerCase().split(' ')
+  for (var i = 0; i < str.length; i++) {
+    str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1)
+  }
+  return str.join(' ')
+}
 
 /**
  *
@@ -17,7 +24,7 @@ import loadingSvgWhite from '../assets/circ-loading-white.svg'
  * @returns {JSX.Element}
  * @constructor
  */
-const RrButton = ({ title, type = '', icon, onClick, disabled, loading, style }) => {
+const Button = ({ title, type = '', icon, onClick, disabled, loading, style }) => {
   let startIcon
   if (icon) {
     switch (icon) {
@@ -42,7 +49,11 @@ const RrButton = ({ title, type = '', icon, onClick, disabled, loading, style })
     >
       {icon && !loading && startIcon}
       {loading ? (
-        <img src={type === 'primary' ? loadingSvgWhite : loadingSvg} className="svg" />
+        <img
+          src={type === 'primary' ? loadingSvgWhite : loadingSvg}
+          className="svg"
+          alt="loading"
+        />
       ) : (
         toTitleCase(title)
       )}
@@ -50,8 +61,9 @@ const RrButton = ({ title, type = '', icon, onClick, disabled, loading, style })
   )
 }
 
-RrButton.propTypes = {
+Button.propTypes = {
   type: PropTypes.oneOf(['primary', 'cancel', '']),
 }
 
-export default RrButton
+export default Button
+export { toTitleCase }

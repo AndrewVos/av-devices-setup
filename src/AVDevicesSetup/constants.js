@@ -1,8 +1,8 @@
-const AUDIO_INPUT_OPTIONS = ['autoGainControl', 'echoCancellation', 'noiseSuppression']
 const DEFAULT_OPTIONS = {
   soundmeterColor: '#1aae9f',
   containerPadding: 8,
 }
+
 const AUDIO_INPUT_ADVICE = {
   heading: 'How to make the most of your mic',
   listItems: [
@@ -13,4 +13,4 @@ const AUDIO_INPUT_ADVICE = {
   ],
 }
 
-export { AUDIO_INPUT_OPTIONS, DEFAULT_OPTIONS }
+export { DEFAULT_OPTIONS }

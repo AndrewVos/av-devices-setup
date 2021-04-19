@@ -1,6 +1,6 @@
-import RrButton from '../AVDevicesSetup/RrButton'
+import Button from './Button'
 import AudioInputTestProgress from './AudioInputTestProgress'
-import { playAudioBlob, recordAudioToBlob } from '../web_media'
+import { playAudioBlob, recordAudioToBlob } from './web_media'
 
 const TEST_PERIOD = 5 * 1000 // milliseconds
 const ANIMATE_STEP_SIZE = 3 // % of complete
@@ -74,7 +74,7 @@ const AudioInputTest = ({ device, onChange, constraints }) => {
   return (
     <div className="row">
       <div className="column remaining space-right">
-        <RrButton
+        <Button
           style={{ minWidth: 100 }}
           title={testState ? 'cancel' : 'test mic'}
           type={testState ? 'cancel' : ''}

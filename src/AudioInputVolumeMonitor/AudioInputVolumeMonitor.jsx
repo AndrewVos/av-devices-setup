@@ -1,7 +1,7 @@
 import LinearProgress from '@material-ui/core/LinearProgress'
-import { arrayStats } from '../helpers'
-import { getSoundMeter } from '../sound_meter'
+import { getSoundMeter } from './sound_meter'
 import styled from 'styled-components'
+import { arrayStats } from './helpers'
 
 const T_INTERVAL = 50
 const N_BUFFER = 20
