@@ -11,16 +11,23 @@ const Container = styled.div`
 const AudioInputTestContainer = ({ device, expanded, style }) => {
   const columnLayout = isMobile || expanded
 
-  console.log(style)
-
   return (
     <Container style={style}>
-      <Grid container direction={columnLayout ? 'column' : 'row'} alignItems="center">
-        <Grid item xs={columnLayout ? 12 : 7} style={{ paddingLeft: 2 }}>
+      <Grid
+        container
+        direction={columnLayout ? 'column' : 'row'}
+        alignItems="center"
+        spacing={1}
+      >
+        <Grid item xs={columnLayout ? 12 : 7}>
           <p className="input-label">Before you start</p>
-          <small>Record yourself saying "hi" so we can make sure it's all working</small>
+          <div style={{ paddingLeft: 2 }}>
+            <small>
+              Record yourself saying "hi" so we can make sure it's all working
+            </small>
+          </div>
         </Grid>
-        <Grid item xs style={{ marginLeft: columnLayout ? 0 : 8 }}>
+        <Grid item container xs style={{ paddingLeft: columnLayout ? 5 : 8 }}>
           <AudioInputTest {...{ device, hideProgress: !expanded }} />
         </Grid>
       </Grid>

@@ -40,7 +40,6 @@ const AVDevicesSetup = (_ref) => {
 
   const options = _.merge(DEFAULT_OPTIONS, userOptions);
 
-  console.log(options);
   useEffect(() => {
     setAvData(_extends({}, avData, {
       requiredDevices

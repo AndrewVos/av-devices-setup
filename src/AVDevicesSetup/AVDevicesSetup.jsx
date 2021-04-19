@@ -31,8 +31,6 @@ const AVDevicesSetup = ({
   const { avData, setAvData } = useContext(AVDeviceContext)
   const options = _.merge(DEFAULT_OPTIONS, userOptions)
 
-  console.log(options)
-
   useEffect(() => {
     setAvData({ ...avData, requiredDevices })
   }, [])
