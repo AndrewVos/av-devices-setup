@@ -1,117 +1,106 @@
-import Backdrop from '@material-ui/core/Backdrop';
+var _s = $RefreshSig$();
+
 import useCookie from 'react-use-cookie';
-import AVDSTitle from './AVDSTitle';
-import RequiredDevices from './RequiredDevices';
-import DeviceSetup from '../DeviceSetup';
-import { getMediaDevicesList } from '../helpers';
-import DeviceError from './DeviceError';
+import { DEFAULT_OPTIONS } from './constants';
+import { AVDeviceContext } from './AVDeviceProvider';
+import VideoFeed from '../VideoInputFeed/VideoFeed';
+import AudioInputVolumeMonitor from '../AudioInputVolumeMonitor/AudioInputVolumeMonitor';
+import DeviceSelection from './DeviceSelection';
+import { AudioInputTestContainer } from '../AudioInputTest';
+import { validateConfig } from './helpers';
 /**
  * For now this component works with a single required device of type 'audioinput', so requiredDevices must
  * be equal to ['audioinput'].
- * @param show - Display component backdrop element
- * @param requiredDevices - [String] of device types, e.g. ['audioinput', 'videoinput', ...]
- * @param avDevices - Object { audioinput: deviceConfig, ... }
- * @param onComplete
+ * @param requiredDevices - [String] of media device types, e.g. ['audioinput', 'videoinput', ...]
+ * @param initConfig - Array of MediaDevices [{ deviceId, etc... }]
+ * @param onChange - Function, runs every time a new device is selected
+ * @param persist - Boolean, sets whether setup is stored and retrieved from cookie
+ * @param userOptions - Object, params can be found in ./constants#DEFAULT_OPTIONS }
  * @returns {JSX.Element}
  * @constructor
  */
 
 const AVDevicesSetup = ({
-  show,
   requiredDevices,
-  avDevices,
-  onComplete,
-  onCancel,
-  persist
+  initConfig,
+  onChange,
+  persist,
+  userOptions = {}
 }) => {
-  const multiple = (requiredDevices == null ? void 0 : requiredDevices.length) > 1;
-  const [configuredDevices, setConfiguredDevices] = useState(avDevices || []);
-  const [currentDeviceType, setCurrentDeviceType] = useState(multiple ? null : requiredDevices[0]);
-  const [userAvDevices, setUserAvDevices] = useCookie('avDevices');
-  const [deviceError, setDeviceError] = useState();
-  /** Lookup cookie to see if device config stored there */
+  _s();
+
+  var _options$video, _options$video2, _options$soundMeter, _options$audioTest;
+
+  const [cookieConfig, setCookieConfig] = useCookie('avDevices');
+  const {
+    avData,
+    setAvData
+  } = useContext(AVDeviceContext);
+  const options = { ...DEFAULT_OPTIONS,
+    ...userOptions
+  };
+  useEffect(() => {
+    setAvData({ ...avData,
+      requiredDevices
+    });
+  }, []);
+  /** Send update to parent */
+
+  /** (If persist) Save configuration to cookie on change */
 
   useEffect(() => {
-    if (!avDevices && userAvDevices) {
-      getMediaDevicesList().then(mediaDevices => {
-        JSON.parse(userAvDevices).forEach(config => {
-          if (mediaDevices.map(mediaDevice => mediaDevice.deviceId).includes(config.device.deviceId)) {
-            onDeviceConfigured(config);
-          }
-        });
-      });
+    if (validateConfig(requiredDevices, avData.configuredDevices)) {
+      if (onChange) onChange(avData.configuredDevices);
+      if (persist) setCookieConfig(JSON.stringify(avData.configuredDevices));
     }
-  }, [userAvDevices]);
-  /** Fixes CSS document width flashing when show/hide component */
+  }, [avData]);
 
-  useEffect(() => {
-    document.getElementsByTagName('html')[0].style.overflow = show ? 'hidden' : 'scroll';
-  }, [show]);
-  /** If requiredDevices has only one entry, returns configured devices to the parent component */
+  function getDevice(kind) {
+    return avData == null ? void 0 : avData.configuredDevices.filter(device => device.kind === kind)[0];
+  }
 
-  /** If requiredDevices has multiple entries, shows the device selection component */
+  function getCookieConfig() {
+    return !!cookieConfig && JSON.parse(cookieConfig);
+  }
 
-  useEffect(() => {
-    const valid = requiredDevices.every(deviceType => configuredDevices.map(d => d.device.kind).includes(deviceType));
-    if (valid && !multiple) onSetupComplete();else {
-      setCurrentDeviceType(!multiple && requiredDevices[0]);
+  return /*#__PURE__*/React.createElement(Grid, {
+    container: true,
+    direction: "column",
+    spacing: 1,
+    style: {
+      padding: options.containerPadding,
+      width: isMobile ? options == null ? void 0 : (_options$video = options.video) == null ? void 0 : _options$video.mobile : options == null ? void 0 : (_options$video2 = options.video) == null ? void 0 : _options$video2.desktop,
+      background: 'white'
     }
-  }, [configuredDevices]);
-  /** Runs every time a device is configured within DeviceSetup component */
-
-  const onDeviceConfigured = (deviceConfig, error) => {
-    if (error || !deviceConfig) {
-      if (multiple) setCurrentDeviceType(null);
-      setDeviceError(error);
-    } else {
-      setConfiguredDevices(configuredDevices.filter(item => item.device.kind !== deviceConfig.device.kind).concat([deviceConfig]));
-      if (multiple) setCurrentDeviceType(null);
+  }, requiredDevices.includes('videoinput') && /*#__PURE__*/React.createElement(Grid, {
+    item: true
+  }, /*#__PURE__*/React.createElement(VideoFeed, {
+    device: getDevice('videoinput')
+  })), requiredDevices.includes('audioinput') && /*#__PURE__*/React.createElement(Grid, {
+    item: true,
+    style: {
+      paddingTop: 10
     }
-  };
-  /** Runs when all required devices have been configured */
-
-
-  const onSetupComplete = () => {
-    // Only save to cookies if persistence enabled
-    if (persist) setUserAvDevices(JSON.stringify(configuredDevices));
-    onComplete(configuredDevices);
-  };
-
-  const onSelectDevice = device => {
-    setCurrentDeviceType(device);
-  };
-
-  const onClickClose = () => {
-    setDeviceError(null);
-
-    if (!!currentDeviceType && multiple) {
-      setCurrentDeviceType(null);
-    } else onCancel();
-  };
-
-  return show && /*#__PURE__*/React.createElement(Backdrop, {
-    open: show,
-    classes: {
-      root: 'avds-backdrop'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "avds-card"
-  }, /*#__PURE__*/React.createElement(AVDSTitle, {
-    onClose: () => onClickClose(),
-    deviceType: currentDeviceType
-  }), deviceError ? /*#__PURE__*/React.createElement(DeviceError, {
-    error: deviceError.toString(),
-    onClear: () => setDeviceError(null)
-  }) : currentDeviceType ? /*#__PURE__*/React.createElement(DeviceSetup, {
-    deviceType: currentDeviceType,
-    onComplete: onDeviceConfigured,
-    configuredDevice: configuredDevices.filter(config => config.device.kind === currentDeviceType)[0]
-  }) : /*#__PURE__*/React.createElement(RequiredDevices, {
-    configuredDevices,
-    requiredDevices,
-    onSelectDevice,
-    onComplete
+  }, /*#__PURE__*/React.createElement(AudioInputVolumeMonitor, {
+    barColor: options == null ? void 0 : (_options$soundMeter = options.soundMeter) == null ? void 0 : _options$soundMeter.color,
+    device: getDevice('audioinput')
+  })), /*#__PURE__*/React.createElement(DeviceSelection, {
+    preselect: initConfig || persist && getCookieConfig()
+  }), requiredDevices.includes('audioinput') && /*#__PURE__*/React.createElement(Grid, {
+    item: true
+  }, /*#__PURE__*/React.createElement(AudioInputTestContainer, {
+    device: getDevice('audioinput'),
+    expanded: options == null ? void 0 : (_options$audioTest = options.audioTest) == null ? void 0 : _options$audioTest.expanded
   })));
 };
 
+_s(AVDevicesSetup, "WDEjW5xZVS/tWmRLOcj2VWlPdYY=", false, function () {
+  return [useCookie];
+});
+
+_c = AVDevicesSetup;
 export default AVDevicesSetup;
+
+var _c;
+
+$RefreshReg$(_c, "AVDevicesSetup");

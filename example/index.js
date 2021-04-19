@@ -24,7 +24,11 @@ function HelloWorld() {
       >
         Toggle
       </button> */}
-      <Backdrop open={showSetup} classes={{ root: 'avds-backdrop' }}>
+      <Backdrop
+        open={showSetup}
+        style={{ zIndex: 1000 }}
+        classes={{ root: 'avds-backdrop' }}
+      >
         <Modal>
           <AVDevicesSetup
             {...{

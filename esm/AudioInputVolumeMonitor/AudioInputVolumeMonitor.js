@@ -1,7 +1,25 @@
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { getSoundMeter, arrayStats } from '../helpers';
+import { getSoundMeter } from './sound_meter';
+import styled from 'styled-components';
+import { arrayStats } from './helpers';
 const T_INTERVAL = 50;
 const N_BUFFER = 20;
+const SIGNAL_THRESHOLD = 0.00001;
+const VARIANCE_THRESHOLD = 0.00000000001;
+const LevelBar = styled(LinearProgress)`
+  width: 100%;
+  height: 7px !important;
+  border-radius: 3px;
+  margin: 3px 0 5px 0;
+  background-color: #d8dee3 !important;
+  & .MuiLinearProgress-root {
+    background-color: ${props => props.clip === 'true' ? 'rgba(255, 0, 0, 0.5)' : props.barcolor};
+  }
+  & .MuiLinearProgress-bar {
+    background-color: ${props => props.clip === 'true' ? 'rgba(255, 0, 0, 0.5)' : props.barcolor};
+  }
+`;
+_c = LevelBar;
 
 class AudioInputVolumeMonitor extends React.Component {
   constructor(props) {
@@ -28,7 +46,7 @@ class AudioInputVolumeMonitor extends React.Component {
       const newBuffer = buffer.length > N_BUFFER ? buffer.slice(1, buffer.length).concat([soundLevel]) : buffer.concat([soundLevel]);
       this.setState({
         buffer: newBuffer,
-        badMic: buffer.length >= N_BUFFER && arrayStats.variance(newBuffer) < 0.00000001
+        badMic: buffer.length >= N_BUFFER && arrayStats.variance(newBuffer) < VARIANCE_THRESHOLD && arrayStats.mean(newBuffer) < SIGNAL_THRESHOLD
       });
     }
   }
@@ -70,22 +88,28 @@ class AudioInputVolumeMonitor extends React.Component {
       clipping,
       badMic
     } = this.state;
-    return /*#__PURE__*/React.createElement("div", {
-      className: "avds-monitor-volume"
-    }, badMic ? /*#__PURE__*/React.createElement("b", {
+    return /*#__PURE__*/React.createElement("div", null, badMic ? /*#__PURE__*/React.createElement("small", {
       style: {
         color: 'red'
       }
-    }, "This microphone looks like it might not be working! Make sure to test it or try a different one") : /*#__PURE__*/React.createElement(LinearProgress, {
-      classes: {
-        root: `avds-monitor${clipping ? ' clip' : ''}`,
-        bar: `avds-monitor-bar${clipping ? ' clip' : ''}`
-      },
+    }, "This microphone looks like it might not be working! Make sure to test it or try a different one") : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      className: "input-label"
+    }, "Your volume"), /*#__PURE__*/React.createElement(LevelBar, {
       variant: "determinate",
-      value: Math.min(soundLevel * 150, 100)
-    }));
+      value: Math.min(soundLevel * 300, 100),
+      clip: clipping.toString(),
+      barcolor: this.props.barColor
+    })));
   }
 
 }
 
+AudioInputVolumeMonitor.propTypes = {
+  barColor: PropTypes.string.isRequired,
+  device: PropTypes.object
+};
 export default AudioInputVolumeMonitor;
+
+var _c;
+
+$RefreshReg$(_c, "LevelBar");

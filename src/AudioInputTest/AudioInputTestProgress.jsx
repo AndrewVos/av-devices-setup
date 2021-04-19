@@ -1,14 +1,29 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Box from '@material-ui/core/Box'
-import RecIcon from '@material-ui/icons/FiberManualRecord'
-import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import styled from 'styled-components'
+import AVIcon from './AVIcon'
+
+const TestProgress = styled.div`
+  height: 40px;
+  width: 30px;
+  margin-left: 10px;
+  margin-right: 2px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 1px;
+  .avds-device-test-progress-circle {
+    transition: color 200ms ease-in-out;
+  }
+  .avds-device-test-progress-circle.inactive {
+    color: rgba(231, 233, 236, 0.75);
+    position: absolute;
+  }
+`
 
 const AudioInputTestProgress = ({ testState = 'recording', progress }) => {
-  const iconClass = 'avds-device-test-progress-circle'
-  const iconStyle = { height: 18, width: 18 }
 
   return (
-    <div className="avds-device-test-progress">
+    <TestProgress className="avds-device-test-progress">
       <CircularProgress
         size={32}
         thickness={5}
@@ -23,7 +38,7 @@ const AudioInputTestProgress = ({ testState = 'recording', progress }) => {
             thickness={5}
             value={progress || 0}
             variant="determinate"
-            classes={{ root: `avds-device-test-progress-circle ${testState}` }}
+            classes={{ root: `avds-device-test-progress-circle progress-${testState}` }}
           />
           <Box
             top={0}
@@ -36,14 +51,14 @@ const AudioInputTestProgress = ({ testState = 'recording', progress }) => {
             justifyContent="center"
           >
             {testState === 'recording' ? (
-              <RecIcon className={`${iconClass} ${testState}`} style={iconStyle} />
+              <AVIcon iconName="record" className={`progress-${testState}`} />
             ) : (
-              <PlayArrowIcon className={`${iconClass} ${testState}`} style={iconStyle} />
+              <AVIcon iconName="play" className={`progress-${testState}`} />
             )}
           </Box>
         </Box>
       )}
-    </div>
+    </TestProgress>
   )
 }
 

@@ -1,8 +1,14 @@
 const DEFAULT_OPTIONS = {
-  soundmeterColor: '#1aae9f',
+  video: {
+    mobile: 300,
+    desktop: 400,
+  },
+  soundMeter: { color: '#1aae9f' },
   containerPadding: 8,
+  audioTest: { expanded: true },
 }
 
+// noinspection JSUnusedLocalSymbols
 const AUDIO_INPUT_ADVICE = {
   heading: 'How to make the most of your mic',
   listItems: [

@@ -1,14 +1,13 @@
 import Button from './Button'
 import AudioInputTestProgress from './AudioInputTestProgress'
 import { playAudioBlob, recordAudioToBlob } from './web_media'
-import { Grid } from '@material-ui/core'
 
 const TEST_PERIOD = 5 * 1000 // milliseconds
 const ANIMATE_STEP_SIZE = 3 // % of complete
 
-const AudioInputTest = ({ device, onChange, constraints, showProgress }) => {
+const AudioInputTest = ({ device, onChange, constraints, hideProgress }) => {
   const [progress, setProgress] = useState(0)
-  const [testState, setTestState] = useState(null)
+  const [testState, setTestState] = useState('default')
   const [testAudio, setTestAudio] = useState(null)
   const [timeFunc, setTimeFunc] = useState(null)
   const [cancelMedia, setCancelMedia] = useState(null)
@@ -35,7 +34,7 @@ const AudioInputTest = ({ device, onChange, constraints, showProgress }) => {
     clearInterval(timeFunc)
     setTimeFunc(null)
     onChange({ testing: false })
-    setTestState(null)
+    setTestState('default')
     setTestAudio(null)
     setProgress(0)
     cancelMedia()
@@ -66,7 +65,7 @@ const AudioInputTest = ({ device, onChange, constraints, showProgress }) => {
     const [playing, cancel] = playAudioBlob(testAudio)
     setCancelMedia(() => cancel)
     playing.then(() => {
-      setTestState(null)
+      setTestState('default')
       setTestAudio(null)
       onChange({ testing: false })
     })
@@ -76,16 +75,24 @@ const AudioInputTest = ({ device, onChange, constraints, showProgress }) => {
     <Grid container direction="row">
       <Grid item xs style={{ display: 'flex' }}>
         <Button
-          style={{ minWidth: 80, flex: 1, justifyContent: 'center' }}
-          title={testState ? 'cancel' : 'test mic'}
-          type={testState ? 'cancel' : ''}
-          icon={testState ? 'cancel' : 'record'}
-          onClick={testState ? cancelTest : beginTest}
+          style={{
+            minWidth: 80,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          title={testState === 'default' ? 'record' : hideProgress ? testState : 'cancel'}
+          type={testState}
+          icon={testState === 'default' ? 'record' : 'cancel'}
+          onClick={testState === 'default' ? beginTest : cancelTest}
         />
       </Grid>
-      {showProgress && (
-        <Grid item xs>
-          <AudioInputTestProgress progress={progress} testState={testState} />
+      {!hideProgress && (
+        <Grid item>
+          <AudioInputTestProgress
+            progress={progress}
+            testState={testState !== 'default' && testState}
+          />
         </Grid>
       )}
     </Grid>

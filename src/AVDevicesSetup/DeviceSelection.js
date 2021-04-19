@@ -1,6 +1,4 @@
-import { Grid } from '@material-ui/core'
 import DeviceSelect from '../AVDeviceSelect/DeviceSelect'
-import { isMobile } from 'react-device-detect'
 import { AVDeviceContext } from './AVDeviceProvider'
 
 const DeviceSelection = ({ preselect }) => {

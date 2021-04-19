@@ -1,6 +1,8 @@
-import RrButton from "../AVDevicesSetup/RrButton";
-import DeviceTestProgress from '../DeviceSetup/DeviceTestProgress';
-import { playAudioBlob, recordAudioToBlob } from '../helpers';
+var _s = $RefreshSig$();
+
+import Button from './Button';
+import AudioInputTestProgress from './AudioInputTestProgress';
+import { playAudioBlob, recordAudioToBlob } from './web_media';
 const TEST_PERIOD = 5 * 1000; // milliseconds
 
 const ANIMATE_STEP_SIZE = 3; // % of complete
@@ -8,10 +10,13 @@ const ANIMATE_STEP_SIZE = 3; // % of complete
 const AudioInputTest = ({
   device,
   onChange,
-  constraints
+  constraints,
+  hideProgress
 }) => {
+  _s();
+
   const [progress, setProgress] = useState(0);
-  const [testState, setTestState] = useState(null);
+  const [testState, setTestState] = useState('default');
   const [testAudio, setTestAudio] = useState(null);
   const [timeFunc, setTimeFunc] = useState(null);
   const [cancelMedia, setCancelMedia] = useState(null);
@@ -42,7 +47,7 @@ const AudioInputTest = ({
     onChange({
       testing: false
     });
-    setTestState(null);
+    setTestState('default');
     setTestAudio(null);
     setProgress(0);
     cancelMedia();
@@ -73,7 +78,7 @@ const AudioInputTest = ({
     const [playing, cancel] = playAudioBlob(testAudio);
     setCancelMedia(() => cancel);
     playing.then(() => {
-      setTestState(null);
+      setTestState('default');
       setTestAudio(null);
       onChange({
         testing: false
@@ -81,24 +86,39 @@ const AudioInputTest = ({
     });
   };
 
-  return /*#__PURE__*/React.createElement("div", {
-    className: "row"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "column remaining space-right"
-  }, /*#__PURE__*/React.createElement(RrButton, {
+  return /*#__PURE__*/React.createElement(Grid, {
+    container: true,
+    direction: "row"
+  }, /*#__PURE__*/React.createElement(Grid, {
+    item: true,
+    xs: true,
     style: {
-      minWidth: 100
+      display: 'flex'
+    }
+  }, /*#__PURE__*/React.createElement(Button, {
+    style: {
+      minWidth: 80,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
     },
-    title: testState ? 'cancel' : 'test mic',
-    type: testState ? 'cancel' : '',
-    icon: testState ? 'cancel' : 'record',
-    onClick: testState ? cancelTest : beginTest
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "column remaining"
-  }, /*#__PURE__*/React.createElement(DeviceTestProgress, {
+    title: testState === 'default' ? 'record' : hideProgress ? testState : 'cancel',
+    type: testState,
+    icon: testState === 'default' ? 'record' : 'cancel',
+    onClick: testState === 'default' ? beginTest : cancelTest
+  })), !hideProgress && /*#__PURE__*/React.createElement(Grid, {
+    item: true
+  }, /*#__PURE__*/React.createElement(AudioInputTestProgress, {
     progress: progress,
-    testState: testState
+    testState: testState !== 'default' && testState
   })));
 };
 
+_s(AudioInputTest, "pXLpXBCZFD7KUg0IDWYQPho+XCY=");
+
+_c = AudioInputTest;
 export default AudioInputTest;
+
+var _c;
+
+$RefreshReg$(_c, "AudioInputTest");

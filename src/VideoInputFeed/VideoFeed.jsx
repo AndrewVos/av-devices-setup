@@ -1,7 +1,6 @@
-import { CircularProgress } from '@material-ui/core'
-import { useEffect } from 'react'
-import styled from 'styled-components'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { validateDevice } from '../helpers'
+import styled from 'styled-components'
 
 const FeedFrame = styled.div`
   min-height: 200px;

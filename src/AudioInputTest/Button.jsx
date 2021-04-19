@@ -1,10 +1,5 @@
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import ClearIcon from '@material-ui/icons/Clear'
-import PublishIcon from '@material-ui/icons/Publish'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import classNames from 'classnames'
-import loadingSvg from '../assets/circ-loading.svg'
-import loadingSvgWhite from '../assets/circ-loading-white.svg'
+import AVIcon from './AVIcon'
 
 const toTitleCase = (str) => {
   str = str.toLowerCase().split(' ')
@@ -29,34 +24,21 @@ const Button = ({ title, type = '', icon, onClick, disabled, loading, style }) =
   if (icon) {
     switch (icon) {
       case 'record':
-        startIcon = <FiberManualRecordIcon />
+        startIcon = <AVIcon iconName="record" color="white" />
         break
       case 'cancel':
-        startIcon = <ClearIcon />
+        startIcon = <AVIcon iconName="close" color="white" />
         break
-      case 'upload':
-        startIcon = <PublishIcon />
-        break
-      case 'back':
-        startIcon = <ArrowBackIcon />
     }
   }
   return (
     <a
       onClick={onClick}
-      className={classNames('button', 'rr-button', type, { disabled })}
+      className={classNames('button', type, { disabled })}
       style={style}
     >
       {icon && !loading && startIcon}
-      {loading ? (
-        <img
-          src={type === 'primary' ? loadingSvgWhite : loadingSvg}
-          className="svg"
-          alt="loading"
-        />
-      ) : (
-        toTitleCase(title)
-      )}
+      {toTitleCase(title)}
     </a>
   )
 }

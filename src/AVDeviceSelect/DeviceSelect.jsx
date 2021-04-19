@@ -1,4 +1,4 @@
-import { LinearProgress } from '@material-ui/core'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import DeviceError from './DeviceError'
 import {
   getMediaDevicesList,

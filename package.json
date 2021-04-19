@@ -6,7 +6,8 @@
   "module": "esm/index.js",
   "scripts": {
     "build": "babel src/ --out-dir esm/ --ignore **/__tests__,**/__mocks__ --copy-files",
-    "prepublishOnly": "yarn run build",
+    "clean": "rimraf esm",
+    "prepublishOnly": "yarn run clean && yarn run build",
     "standalone": "webpack-dev-server --hot"
   },
   "repository": {
@@ -32,7 +33,6 @@
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
     "classnames": "^2.3.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
@@ -53,6 +53,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.4.1",
     "react-refresh": "^0.10.0",
+    "rimraf": "^3.0.2",
     "style-loader": "^2.0.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",

@@ -1,6 +1,4 @@
 import useCookie from 'react-use-cookie'
-import { Grid } from '@material-ui/core'
-import { isMobile } from 'react-device-detect'
 import { DEFAULT_OPTIONS } from './constants'
 import { AVDeviceContext } from './AVDeviceProvider'
 import VideoFeed from '../VideoInputFeed/VideoFeed'
@@ -16,7 +14,7 @@ import { validateConfig } from './helpers'
  * @param initConfig - Array of MediaDevices [{ deviceId, etc... }]
  * @param onChange - Function, runs every time a new device is selected
  * @param persist - Boolean, sets whether setup is stored and retrieved from cookie
- * @param options - Object, params can be found in ./constants#DEFAULT_OPTIONS }
+ * @param userOptions - Object, params can be found in ./constants#DEFAULT_OPTIONS }
  * @returns {JSX.Element}
  * @constructor
  */
@@ -25,10 +23,11 @@ const AVDevicesSetup = ({
   initConfig,
   onChange,
   persist,
-  options = DEFAULT_OPTIONS,
+  userOptions = {},
 }) => {
   const [cookieConfig, setCookieConfig] = useCookie('avDevices')
   const { avData, setAvData } = useContext(AVDeviceContext)
+  const options = { ...DEFAULT_OPTIONS, ...userOptions }
 
   useEffect(() => {
     setAvData({ ...avData, requiredDevices })
@@ -58,7 +57,7 @@ const AVDevicesSetup = ({
       spacing={1}
       style={{
         padding: options.containerPadding,
-        width: isMobile ? 300 : 400,
+        width: isMobile ? options?.video?.mobile : options?.video?.desktop,
         background: 'white',
       }}
     >
@@ -70,7 +69,7 @@ const AVDevicesSetup = ({
       {requiredDevices.includes('audioinput') && (
         <Grid item style={{ paddingTop: 10 }}>
           <AudioInputVolumeMonitor
-            barColor={options.soundmeterColor}
+            barColor={options?.soundMeter?.color}
             device={getDevice('audioinput')}
           />
         </Grid>
@@ -78,7 +77,10 @@ const AVDevicesSetup = ({
       <DeviceSelection preselect={initConfig || (persist && getCookieConfig())} />
       {requiredDevices.includes('audioinput') && (
         <Grid item>
-          <AudioInputTestContainer device={getDevice('audioinput')} />
+          <AudioInputTestContainer
+            device={getDevice('audioinput')}
+            expanded={options?.audioTest?.expanded}
+          />
         </Grid>
       )}
     </Grid>
