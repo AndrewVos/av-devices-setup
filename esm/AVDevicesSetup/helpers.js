@@ -1,13 +1,7 @@
 import { validateDevice } from '../helpers';
 
-var validateConfig = function validateConfig(requiredDevices, configuredDevices) {
-  return requiredDevices.every(function (requiredDevice) {
-    return configuredDevices.map(function (d) {
-      return d.kind;
-    }).includes(requiredDevice);
-  }) && configuredDevices.every(function (device) {
-    return validateDevice(device);
-  });
+const validateConfig = (requiredDevices, configuredDevices) => {
+  return requiredDevices.every(requiredDevice => configuredDevices.map(d => d.kind).includes(requiredDevice)) && configuredDevices.every(device => validateDevice(device));
 };
 
 export { validateConfig };

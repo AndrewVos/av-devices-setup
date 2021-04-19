@@ -1,7 +1,9 @@
-var DeviceError = function DeviceError(_ref) {
-  var error = _ref.error;
+const DeviceError = (_ref) => {
+  let {
+    error
+  } = _ref;
 
-  var getHelptext = function getHelptext() {
+  const getHelptext = () => {
     switch (error) {
       case 'DOMException: Permission denied':
       case 'NotAllowedError: Permission denied':

@@ -1,5 +1,6 @@
 import useCookie from 'react-use-cookie'
 import { Grid } from '@material-ui/core'
+import { isMobile } from 'react-device-detect'
 import { DEFAULT_OPTIONS } from './constants'
 import { AVDeviceContext } from './AVDeviceProvider'
 import VideoFeed from '../VideoInputFeed/VideoFeed'
@@ -28,7 +29,9 @@ const AVDevicesSetup = ({
 }) => {
   const [cookieConfig, setCookieConfig] = useCookie('avDevices')
   const { avData, setAvData } = useContext(AVDeviceContext)
-  const options = { ...DEFAULT_OPTIONS, ...userOptions }
+  const options = _.merge(DEFAULT_OPTIONS, userOptions)
+
+  console.log(options)
 
   useEffect(() => {
     setAvData({ ...avData, requiredDevices })
@@ -57,14 +60,17 @@ const AVDevicesSetup = ({
       direction="column"
       spacing={1}
       style={{
-        padding: options.containerPadding,
-        width: isMobile ? options?.video?.mobile : options?.video?.desktop,
-        background: 'white',
+        padding: options.container.padding,
+        width: options.container.width[isMobile ? 'mobile' : 'desktop'],
+        background: options.container.background,
       }}
     >
       {requiredDevices.includes('videoinput') && (
         <Grid item>
-          <VideoFeed device={getDevice('videoinput')} />
+          <VideoFeed
+            device={getDevice('videoinput')}
+            maxHeight={options.video.maxHeight}
+          />
         </Grid>
       )}
       {requiredDevices.includes('audioinput') && (
@@ -81,6 +87,7 @@ const AVDevicesSetup = ({
           <AudioInputTestContainer
             device={getDevice('audioinput')}
             expanded={options?.audioTest?.expanded}
+            style={{ background: options.audioTest.background }}
           />
         </Grid>
       )}

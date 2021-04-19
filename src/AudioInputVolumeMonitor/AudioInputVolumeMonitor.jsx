@@ -1,5 +1,6 @@
 import LinearProgress from '@material-ui/core/LinearProgress'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { getSoundMeter } from './sound_meter'
 import { arrayStats } from './helpers'
 

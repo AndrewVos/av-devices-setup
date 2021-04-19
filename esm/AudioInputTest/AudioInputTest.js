@@ -1,37 +1,24 @@
+import { Grid } from '@material-ui/core';
 import Button from './Button';
 import AudioInputTestProgress from './AudioInputTestProgress';
 import { playAudioBlob, recordAudioToBlob } from './web_media';
-var TEST_PERIOD = 5 * 1000; // milliseconds
+const TEST_PERIOD = 5 * 1000; // milliseconds
 
-var ANIMATE_STEP_SIZE = 3; // % of complete
+const ANIMATE_STEP_SIZE = 3; // % of complete
 
-var AudioInputTest = function AudioInputTest(_ref) {
-  var device = _ref.device,
-      onChange = _ref.onChange,
-      constraints = _ref.constraints,
-      hideProgress = _ref.hideProgress;
-
-  var _useState = useState(0),
-      progress = _useState[0],
-      setProgress = _useState[1];
-
-  var _useState2 = useState('default'),
-      testState = _useState2[0],
-      setTestState = _useState2[1];
-
-  var _useState3 = useState(null),
-      testAudio = _useState3[0],
-      setTestAudio = _useState3[1];
-
-  var _useState4 = useState(null),
-      timeFunc = _useState4[0],
-      setTimeFunc = _useState4[1];
-
-  var _useState5 = useState(null),
-      cancelMedia = _useState5[0],
-      setCancelMedia = _useState5[1];
-
-  useEffect(function () {
+const AudioInputTest = (_ref) => {
+  let {
+    device,
+    onChange,
+    constraints,
+    hideProgress
+  } = _ref;
+  const [progress, setProgress] = useState(0);
+  const [testState, setTestState] = useState('default');
+  const [testAudio, setTestAudio] = useState(null);
+  const [timeFunc, setTimeFunc] = useState(null);
+  const [cancelMedia, setCancelMedia] = useState(null);
+  useEffect(() => {
     clearInterval(timeFunc);
     setTimeFunc(null);
 
@@ -42,7 +29,7 @@ var AudioInputTest = function AudioInputTest(_ref) {
     }
   }, [testAudio]);
 
-  var beginTest = function beginTest() {
+  const beginTest = () => {
     setProgress(0);
     setTestState('recording');
     animateProgress();
@@ -52,7 +39,7 @@ var AudioInputTest = function AudioInputTest(_ref) {
     });
   };
 
-  var cancelTest = function cancelTest() {
+  const cancelTest = () => {
     clearInterval(timeFunc);
     setTimeFunc(null);
     if (onChange) onChange({
@@ -64,41 +51,31 @@ var AudioInputTest = function AudioInputTest(_ref) {
     cancelMedia();
   };
 
-  var animateProgress = function animateProgress(reverse) {
-    var animateInterval = setInterval(function () {
-      setProgress(function (prevProgress) {
+  const animateProgress = reverse => {
+    const animateInterval = setInterval(() => {
+      setProgress(prevProgress => {
         return prevProgress + (reverse ? -1 : 1) * ANIMATE_STEP_SIZE;
       });
     }, TEST_PERIOD / (100 / ANIMATE_STEP_SIZE));
     setTimeFunc(animateInterval);
   };
 
-  var recordTestAudio = function recordTestAudio() {
-    var _recordAudioToBlob = recordAudioToBlob({
+  const recordTestAudio = () => {
+    const [blobPromise, cancel] = recordAudioToBlob({
       deviceId: device.deviceId,
       length: TEST_PERIOD,
-      constraints: constraints
-    }),
-        blobPromise = _recordAudioToBlob[0],
-        cancel = _recordAudioToBlob[1];
-
-    setCancelMedia(function () {
-      return cancel;
+      constraints
     });
-    blobPromise.then(function (blob) {
+    setCancelMedia(() => cancel);
+    blobPromise.then(blob => {
       setTestAudio(blob);
     });
   };
 
-  var playTestAudio = function playTestAudio() {
-    var _playAudioBlob = playAudioBlob(testAudio),
-        playing = _playAudioBlob[0],
-        cancel = _playAudioBlob[1];
-
-    setCancelMedia(function () {
-      return cancel;
-    });
-    playing.then(function () {
+  const playTestAudio = () => {
+    const [playing, cancel] = playAudioBlob(testAudio);
+    setCancelMedia(() => cancel);
+    playing.then(() => {
       setTestState('default');
       setTestAudio(null);
       if (onChange) onChange({

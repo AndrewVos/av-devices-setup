@@ -1,11 +1,10 @@
 const DEFAULT_OPTIONS = {
   video: {
-    mobile: 300,
-    desktop: 400,
+    maxHeight: 300,
   },
   soundMeter: { color: '#1aae9f' },
-  containerPadding: 8,
-  audioTest: { expanded: false },
+  container: { padding: 8, width: { mobile: '100%', desktop: 400 }, background: 'white' },
+  audioTest: { expanded: false, background: '#f7f9fa' },
 }
 
 // noinspection JSUnusedLocalSymbols

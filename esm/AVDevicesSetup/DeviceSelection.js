@@ -1,18 +1,18 @@
+import { Grid } from '@material-ui/core';
+import { isMobile } from 'react-device-detect';
 import DeviceSelect from '../AVDeviceSelect/DeviceSelect';
 import { AVDeviceContext } from './AVDeviceProvider';
 
-var DeviceSelection = function DeviceSelection(_ref) {
-  var preselect = _ref.preselect;
+const DeviceSelection = (_ref) => {
+  let {
+    preselect
+  } = _ref;
+  const {
+    avData,
+    upsertDevice
+  } = useContext(AVDeviceContext);
 
-  var _useContext = useContext(AVDeviceContext),
-      avData = _useContext.avData,
-      upsertDevice = _useContext.upsertDevice;
-
-  var getPreselect = function getPreselect(kind) {
-    return !!preselect && preselect.filter(function (device) {
-      return device.kind === kind;
-    })[0];
-  };
+  const getPreselect = kind => !!preselect && preselect.filter(device => device.kind === kind)[0];
 
   return /*#__PURE__*/React.createElement(Grid, {
     item: true,

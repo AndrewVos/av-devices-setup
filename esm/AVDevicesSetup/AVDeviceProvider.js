@@ -2,21 +2,22 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 import { createContext } from 'react';
 import { validateDevice } from '../helpers';
-var AVDeviceContext = /*#__PURE__*/createContext();
-var Provider = AVDeviceContext.Provider,
-    Consumer = AVDeviceContext.Consumer;
+const AVDeviceContext = /*#__PURE__*/createContext();
+const {
+  Provider,
+  Consumer
+} = AVDeviceContext;
 
-var AVDeviceProvider = function AVDeviceProvider(_ref) {
-  var children = _ref.children;
-
-  var _useState = useState({
+const AVDeviceProvider = (_ref) => {
+  let {
+    children
+  } = _ref;
+  const [avData, setAvData] = useState({
     configuredDevices: [],
     requiredDevices: []
-  }),
-      avData = _useState[0],
-      setAvData = _useState[1];
+  });
 
-  var upsertDevice = function upsertDevice(device) {
+  const upsertDevice = device => {
     if (!!device && validateDevice(device)) {
       setAvData(_extends({}, avData, {
         configuredDevices: _.unionBy([device], avData.configuredDevices, 'kind')
@@ -26,9 +27,9 @@ var AVDeviceProvider = function AVDeviceProvider(_ref) {
 
   return /*#__PURE__*/React.createElement(Provider, {
     value: {
-      avData: avData,
-      setAvData: setAvData,
-      upsertDevice: upsertDevice
+      avData,
+      setAvData,
+      upsertDevice
     }
   }, children);
 };

@@ -1,15 +1,17 @@
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-var AVIcon = function AVIcon(_ref) {
-  var iconName = _ref.iconName,
-      color = _ref.color,
-      className = _ref.className;
+const AVIcon = (_ref) => {
+  let {
+    iconName,
+    color,
+    className
+  } = _ref;
 
   switch (iconName) {
     case 'play':
       return /*#__PURE__*/React.createElement(SvgIcon, {
         style: {
-          color: color
+          color
         },
         className: className
       }, /*#__PURE__*/React.createElement("path", {
@@ -19,7 +21,7 @@ var AVIcon = function AVIcon(_ref) {
     case 'record':
       return /*#__PURE__*/React.createElement(SvgIcon, {
         style: {
-          color: color
+          color
         },
         className: className
       }, /*#__PURE__*/React.createElement("path", {
@@ -29,7 +31,7 @@ var AVIcon = function AVIcon(_ref) {
     case 'close':
       return /*#__PURE__*/React.createElement(SvgIcon, {
         style: {
-          color: color
+          color
         },
         className: className
       }, /*#__PURE__*/React.createElement("path", {

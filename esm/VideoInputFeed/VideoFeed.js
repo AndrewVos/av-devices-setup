@@ -5,34 +5,29 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { validateDevice } from '../helpers';
 import styled from 'styled-components';
-var FeedFrame = styled.div(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  min-height: 200px;\n  width: 100%;\n  background: #dfe6ed;\n  border: 2px solid #b2bec8;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"])));
-var Feed = styled.video(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  width: 100%;\n  outline: 2px solid #b2bec8;\n  display: ", ";\n"])), function (props) {
-  return props.show ? 'block' : 'none';
-});
+const FeedFrame = styled.div(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  min-height: 200px;\n  width: 100%;\n  background: #dfe6ed;\n  border: 2px solid #b2bec8;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"])));
+const Feed = styled.video(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  width: 100%;\n  background: black;\n  padding-bottom: 1px;\n  outline: 2px solid #b2bec8;\n  display: ", ";\n"])), props => props.show ? 'block' : 'none');
 
-var VideoFeed = function VideoFeed(_ref) {
-  var device = _ref.device;
-
-  var _useState = useState('loading'),
-      status = _useState[0],
-      setStatus = _useState[1];
-
-  var _useState2 = useState(),
-      stream = _useState2[0],
-      setStream = _useState2[1];
+const VideoFeed = (_ref) => {
+  let {
+    device,
+    maxHeight
+  } = _ref;
+  const [status, setStatus] = useState('loading');
+  const [stream, setStream] = useState();
 
   function stopMediaTracks() {
-    if (!!stream) stream.getTracks().forEach(function (track) {
+    if (!!stream) stream.getTracks().forEach(track => {
       track.stop();
     });
   }
 
-  useEffect(function () {
-    return function () {
+  useEffect(() => {
+    return () => {
       stopMediaTracks();
     };
   }, []);
-  useEffect(function () {
+  useEffect(() => {
     stopMediaTracks();
 
     if (device && validateDevice(device)) {
@@ -42,15 +37,15 @@ var VideoFeed = function VideoFeed(_ref) {
             exact: device.deviceId
           }
         }
-      }).then(function (videoStream) {
-        var video = document.getElementById('webcam-feed');
+      }).then(videoStream => {
+        const video = document.getElementById('webcam-feed');
         video.srcObject = videoStream;
-        video.addEventListener('canplay', function () {
+        video.addEventListener('canplay', () => {
           video.play();
         });
         setStream(videoStream);
         setStatus('streaming');
-      })["catch"](function () {
+      }).catch(function () {
         console.log('Something went wrong!');
       });
     }
@@ -60,6 +55,9 @@ var VideoFeed = function VideoFeed(_ref) {
       color: '#bdc3c9'
     }
   }), /*#__PURE__*/React.createElement(Feed, {
+    style: {
+      maxHeight
+    },
     loop: true,
     autoplay: true,
     muted: true,

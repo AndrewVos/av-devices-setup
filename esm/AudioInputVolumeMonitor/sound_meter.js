@@ -1,7 +1,3 @@
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 export function volumeAudioProcess(event) {
   var buf = event.inputBuffer.getChannelData(0);
   var bufLength = buf.length;
@@ -53,42 +49,22 @@ export function createAudioMeter(audioContext, clipLevel, averaging, clipLag) {
   return processor;
 }
 
-var getSoundMeter = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
-    var deviceId, audioCtx, stream, source, meter;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            deviceId = _ref.deviceId;
-            audioCtx = new AudioContext();
-            _context.next = 4;
-            return navigator.mediaDevices.getUserMedia({
-              audio: {
-                deviceId: {
-                  exact: deviceId
-                }
-              }
-            });
-
-          case 4:
-            stream = _context.sent;
-            source = audioCtx.createMediaStreamSource(stream);
-            meter = createAudioMeter(audioCtx);
-            source.connect(meter);
-            return _context.abrupt("return", meter);
-
-          case 9:
-          case "end":
-            return _context.stop();
-        }
+const getSoundMeter = async (_ref) => {
+  let {
+    deviceId
+  } = _ref;
+  let audioCtx = new AudioContext();
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: {
+      deviceId: {
+        exact: deviceId
       }
-    }, _callee);
-  }));
-
-  return function getSoundMeter(_x) {
-    return _ref2.apply(this, arguments);
-  };
-}();
+    }
+  });
+  const source = audioCtx.createMediaStreamSource(stream);
+  const meter = createAudioMeter(audioCtx);
+  source.connect(meter);
+  return meter;
+};
 
 export { getSoundMeter };

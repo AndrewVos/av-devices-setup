@@ -46,11 +46,7 @@ module.exports = {
         useEffect: ['react', 'useEffect'],
         useContext: ['react', 'useContext'],
         ReactDOM: ['react-dom'],
-        PropTypes: 'prop-types',
-        classes: 'classnames',
         _: 'lodash',
-        Grid: ['@material-ui/core', 'Grid'],
-        isMobile: ['react-device-detect', 'isMobile'],
       }),
   ].filter(Boolean),
   resolve: {

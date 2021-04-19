@@ -31,7 +31,7 @@ function HelloWorld() {
               persist: false,
               requiredDevices: ['audioinput', 'videoinput'],
               userOptions: {
-                audioTest: { expanded: true },
+                audioTest: { expanded: false },
               },
             }}
           />

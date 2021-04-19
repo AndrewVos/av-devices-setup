@@ -14,11 +14,13 @@ const FeedFrame = styled.div`
 
 const Feed = styled.video`
   width: 100%;
+  background: black;
+  padding-bottom: 1px;
   outline: 2px solid #b2bec8;
   display: ${(props) => (props.show ? 'block' : 'none')};
 `
 
-const VideoFeed = ({ device }) => {
+const VideoFeed = ({ device, maxHeight }) => {
   const [status, setStatus] = useState('loading')
   const [stream, setStream] = useState()
 
@@ -58,7 +60,14 @@ const VideoFeed = ({ device }) => {
   return (
     <FeedFrame>
       {status === 'loading' && <CircularProgress style={{ color: '#bdc3c9' }} />}
-      <Feed loop autoplay muted id="webcam-feed" show={status === 'streaming'} />
+      <Feed
+        style={{ maxHeight }}
+        loop
+        autoplay
+        muted
+        id="webcam-feed"
+        show={status === 'streaming'}
+      />
     </FeedFrame>
   )
 }
