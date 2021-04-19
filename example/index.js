@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import 'av-devices-setup/styles.css'
 import './index.css'
-import { AVDevicesSetup } from 'av-devices-setup'
+import AVDevicesSetup from 'av-devices-setup'
 import Backdrop from '@material-ui/core/Backdrop'
 import styled from 'styled-components'
 
@@ -14,7 +14,7 @@ const Modal = styled.div`
 `
 
 function HelloWorld() {
-  const [showSetup, setShowSetup] = React.useState(true)
+  const [showSetup] = React.useState(true)
 
   return (
     <div className="example-container">

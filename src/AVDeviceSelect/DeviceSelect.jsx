@@ -3,7 +3,7 @@ import { reduceMediaDeviceInfo, getMediaLabel } from '../helpers'
 import { getMediaDevicesList, getPermissions } from '../web_media'
 import DeviceError from './DeviceError'
 
-const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
+const DeviceSelect = ({ medium, onChange, preselect }) => {
   const [selected, setSelected] = useState()
   const [available, setAvailable] = useState([])
   const [error, setError] = useState()
@@ -26,8 +26,6 @@ const DeviceSelect = ({ medium, onChange, onFail, preselect }) => {
     })
     if (!mediaStream.id) {
       setError(mediaStream.toString())
-
-      //   onFail(null, mediaStream)
       return false
     } else return true
   }

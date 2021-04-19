@@ -4,10 +4,10 @@ import { isMobile } from 'react-device-detect'
 import { validateConfig } from '../helpers'
 import { DEFAULT_OPTIONS } from '../constants'
 import { AVDeviceContext } from './AVDeviceProvider'
-import VideoFeed from './VideoFeed'
-import AudioInputVolumeMonitor from '../AudioInputSetup/AudioInputVolumeMonitor'
+import VideoFeed from '../VideoInputFeed/VideoFeed'
+import AudioInputVolumeMonitor from '../AudioInputVolumeMonitor/AudioInputVolumeMonitor'
 import DeviceSelection from './DeviceSelection'
-import AudioInputTestContainer from '../AudioInputSetup/AudioInputTestContainer'
+import AudioInputTestContainer from '../AudioInputTest/AudioInputTestContainer'
 
 /**
  * For now this component works with a single required device of type 'audioinput', so requiredDevices must
@@ -47,6 +47,10 @@ const AVDevicesSetup = ({
     return avData?.configuredDevices.filter((device) => device.kind === kind)[0]
   }
 
+  function getCookieConfig() {
+    return !!cookieConfig && JSON.parse(cookieConfig)
+  }
+
   return (
     <Grid
       container
@@ -71,7 +75,7 @@ const AVDevicesSetup = ({
           />
         </Grid>
       )}
-      <DeviceSelection preselect={initConfig || (persist && JSON.parse(cookieConfig))} />
+      <DeviceSelection preselect={initConfig || (persist && getCookieConfig())} />
       {requiredDevices.includes('audioinput') && (
         <Grid item>
           <AudioInputTestContainer device={getDevice('audioinput')} />

@@ -1,6 +1,9 @@
 import LinearProgress from '@material-ui/core/LinearProgress'
-import MuiCheckbox from "./MuiCheckbox";
+import MuiCheckbox from './MuiCheckbox'
 
+// TODO: this needs to be refactored to the same pattern as the other components
+// Should take an array of required devices and an array of desired constraints
+// Output checkboxes should reflect convolution of those two arrays
 const InputConstraints = ({ constraints, disabled, onChange }) => {
   const onUpdate = (data) => {
     const newConstraints = { ...constraints, [data.name]: !data.value }

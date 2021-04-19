@@ -24,9 +24,10 @@ const VideoFeed = ({ device }) => {
   const [stream, setStream] = useState()
 
   function stopMediaTracks() {
-    stream.getTracks().forEach((track) => {
-      track.stop()
-    })
+    if (!!stream)
+      stream.getTracks().forEach((track) => {
+        track.stop()
+      })
   }
 
   useEffect(() => {
@@ -36,9 +37,7 @@ const VideoFeed = ({ device }) => {
   }, [])
 
   useEffect(() => {
-    if (!!stream) {
-      stopMediaTracks()
-    }
+    stopMediaTracks()
     if (device && validateDevice(device)) {
       navigator.mediaDevices
         .getUserMedia({ video: { deviceId: { exact: device.deviceId } } })
