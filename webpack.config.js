@@ -5,6 +5,7 @@ const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+// noinspection WebpackConfigHighlighting
 module.exports = {
   mode: isDevelopment ? 'development' : 'production',
   entry: { main: './example/index.js' },
@@ -38,18 +39,19 @@ module.exports = {
       filename: './index.html',
       template: './example/index.html',
     }),
-    new webpack.ProvidePlugin({
-      React: 'react',
-      useState: ['react', 'useState'],
-      useEffect: ['react', 'useEffect'],
-      useContext: ['react', 'useContext'],
-      ReactDOM: ['react-dom'],
-      PropTypes: 'prop-types',
-      classes: 'classnames',
-      _: 'lodash',
-      Grid: ['@material-ui/core', 'Grid'],
-      isMobile: ['react-device-detect', 'isMobile'],
-    }),
+    isDevelopment &&
+      new webpack.ProvidePlugin({
+        React: 'react',
+        useState: ['react', 'useState'],
+        useEffect: ['react', 'useEffect'],
+        useContext: ['react', 'useContext'],
+        ReactDOM: ['react-dom'],
+        PropTypes: 'prop-types',
+        classes: 'classnames',
+        _: 'lodash',
+        Grid: ['@material-ui/core', 'Grid'],
+        isMobile: ['react-device-detect', 'isMobile'],
+      }),
   ].filter(Boolean),
   resolve: {
     alias: {

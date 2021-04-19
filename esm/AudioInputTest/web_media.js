@@ -1,3 +1,5 @@
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 /**
  *
  * @param deviceId - String: mediaDevice identifier
@@ -5,27 +7,26 @@
  * @param constraints - Array of web media constraints
  * @returns {[Promise<unknown>, cancel]}
  */
-const recordAudioToBlob = ({
-  deviceId,
-  length,
-  constraints
-}) => {
-  let timeout,
+var recordAudioToBlob = function recordAudioToBlob(_ref) {
+  var deviceId = _ref.deviceId,
+      length = _ref.length,
+      constraints = _ref.constraints;
+  var timeout,
       mediaRecorder,
       chunks = [];
 
-  const cancel = () => {
+  var cancel = function cancel() {
     clearTimeout(timeout);
     mediaRecorder.removeEventListener('stop', mediaRecorder);
     chunks = [];
   };
 
-  const recorder = new Promise(resolve => {
+  var recorder = new Promise(function (resolve) {
     navigator.mediaDevices.getUserMedia({
-      audio: { ...constraints,
-        deviceId
-      }
-    }).then(stream => {
+      audio: _extends({}, constraints, {
+        deviceId: deviceId
+      })
+    }).then(function (stream) {
       mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();
 
@@ -34,13 +35,15 @@ const recordAudioToBlob = ({
       };
 
       mediaRecorder.onstop = function () {
-        const blob = new Blob(chunks, {
+        var blob = new Blob(chunks, {
           type: 'audio/ogg; codecs=opus'
         });
         resolve(blob);
       };
 
-      timeout = setTimeout(() => mediaRecorder.stop(), length);
+      timeout = setTimeout(function () {
+        return mediaRecorder.stop();
+      }, length);
     });
   });
   return [recorder, cancel];
@@ -52,13 +55,13 @@ const recordAudioToBlob = ({
  */
 
 
-const playAudioBlob = blob => {
-  const url = URL.createObjectURL(blob);
-  const audio = new Audio();
+var playAudioBlob = function playAudioBlob(blob) {
+  var url = URL.createObjectURL(blob);
+  var audio = new Audio();
   audio.src = url;
   audio.play();
-  const playing = new Promise(resolve => {
-    const pollForEnd = setInterval(() => {
+  var playing = new Promise(function (resolve) {
+    var pollForEnd = setInterval(function () {
       if (audio.ended) {
         clearInterval(pollForEnd);
         resolve(true);
@@ -66,7 +69,7 @@ const playAudioBlob = blob => {
     }, 100);
   });
 
-  const cancel = () => {
+  var cancel = function cancel() {
     audio.pause();
   };
 

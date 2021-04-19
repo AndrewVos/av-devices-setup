@@ -1,19 +1,18 @@
-var _s = $RefreshSig$();
-
 import DeviceSelect from '../AVDeviceSelect/DeviceSelect';
 import { AVDeviceContext } from './AVDeviceProvider';
 
-const DeviceSelection = ({
-  preselect
-}) => {
-  _s();
+var DeviceSelection = function DeviceSelection(_ref) {
+  var preselect = _ref.preselect;
 
-  const {
-    avData,
-    upsertDevice
-  } = useContext(AVDeviceContext);
+  var _useContext = useContext(AVDeviceContext),
+      avData = _useContext.avData,
+      upsertDevice = _useContext.upsertDevice;
 
-  const getPreselect = kind => !!preselect && preselect.filter(device => device.kind === kind)[0];
+  var getPreselect = function getPreselect(kind) {
+    return !!preselect && preselect.filter(function (device) {
+      return device.kind === kind;
+    })[0];
+  };
 
   return /*#__PURE__*/React.createElement(Grid, {
     item: true,
@@ -37,12 +36,4 @@ const DeviceSelection = ({
   })));
 };
 
-_s(DeviceSelection, "i3I0twQOHk0H8rfPzavApJuLvfk=");
-
-_c = DeviceSelection;
-DeviceSelection.propTypes = {};
 export default DeviceSelection;
-
-var _c;
-
-$RefreshReg$(_c, "DeviceSelection");

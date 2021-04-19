@@ -30,9 +30,6 @@ function HelloWorld() {
             {...{
               persist: false,
               requiredDevices: ['audioinput', 'videoinput'],
-              avDevices: null,
-              onComplete: null,
-              onCancel: null,
               userOptions: {
                 audioTest: { expanded: true },
               },

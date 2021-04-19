@@ -1,17 +1,15 @@
+var _templateObject;
+
+function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
+
 import styled from 'styled-components';
 import AudioInputTest from './AudioInputTest';
-const Container = styled.div`
-  background: #f7f9fa;
-  padding: 12px;
-  margin-top: 20px;
-`;
-_c = Container;
+var Container = styled.div(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  background: #f7f9fa;\n  padding: 12px;\n  margin-top: 20px;\n"])));
 
-const AudioInputTestContainer = ({
-  device,
-  expanded
-}) => {
-  const columnLayout = isMobile || expanded;
+var AudioInputTestContainer = function AudioInputTestContainer(_ref) {
+  var device = _ref.device,
+      expanded = _ref.expanded;
+  var columnLayout = isMobile || expanded;
   return /*#__PURE__*/React.createElement(Container, null, /*#__PURE__*/React.createElement("p", {
     className: "input-label"
   }, "Before you start"), /*#__PURE__*/React.createElement(Grid, {
@@ -31,16 +29,9 @@ const AudioInputTestContainer = ({
       marginLeft: columnLayout ? 0 : 8
     }
   }, /*#__PURE__*/React.createElement(AudioInputTest, {
-    device,
+    device: device,
     hideProgress: !expanded
   }))));
 };
 
-_c2 = AudioInputTestContainer;
-AudioInputTestContainer.propTypes = {};
 export default AudioInputTestContainer;
-
-var _c, _c2;
-
-$RefreshReg$(_c, "Container");
-$RefreshReg$(_c2, "AudioInputTestContainer");

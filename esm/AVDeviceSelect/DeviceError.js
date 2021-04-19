@@ -1,7 +1,7 @@
-const DeviceError = ({
-  error
-}) => {
-  const getHelptext = () => {
+var DeviceError = function DeviceError(_ref) {
+  var error = _ref.error;
+
+  var getHelptext = function getHelptext() {
     switch (error) {
       case 'DOMException: Permission denied':
       case 'NotAllowedError: Permission denied':
@@ -20,9 +20,4 @@ const DeviceError = ({
   }, getHelptext());
 };
 
-_c = DeviceError;
 export default DeviceError;
-
-var _c;
-
-$RefreshReg$(_c, "DeviceError");

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import AVIcon from './AVIcon';
 
-const toTitleCase = str => {
+var toTitleCase = function toTitleCase(str) {
   str = str.toLowerCase().split(' ');
 
   for (var i = 0; i < str.length; i++) {
@@ -22,16 +22,16 @@ const toTitleCase = str => {
  */
 
 
-const Button = ({
-  title,
-  type = '',
-  icon,
-  onClick,
-  disabled,
-  loading,
-  style
-}) => {
-  let startIcon;
+var Button = function Button(_ref) {
+  var title = _ref.title,
+      _ref$type = _ref.type,
+      type = _ref$type === void 0 ? '' : _ref$type,
+      icon = _ref.icon,
+      onClick = _ref.onClick,
+      disabled = _ref.disabled,
+      loading = _ref.loading,
+      style = _ref.style;
+  var startIcon;
 
   if (icon) {
     switch (icon) {
@@ -54,19 +54,11 @@ const Button = ({
   return /*#__PURE__*/React.createElement("a", {
     onClick: onClick,
     className: classNames('button', type, {
-      disabled
+      disabled: disabled
     }),
     style: style
   }, icon && !loading && startIcon, toTitleCase(title));
 };
 
-_c = Button;
-Button.propTypes = {
-  type: PropTypes.oneOf(['primary', 'cancel', 'default', 'recording', 'playing'])
-};
 export default Button;
 export { toTitleCase };
-
-var _c;
-
-$RefreshReg$(_c, "Button");

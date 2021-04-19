@@ -1,4 +1,5 @@
 import useCookie from 'react-use-cookie'
+import { Grid } from '@material-ui/core'
 import { DEFAULT_OPTIONS } from './constants'
 import { AVDeviceContext } from './AVDeviceProvider'
 import VideoFeed from '../VideoInputFeed/VideoFeed'

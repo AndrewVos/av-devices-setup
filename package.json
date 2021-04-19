@@ -2,10 +2,9 @@
   "name": "av-devices-setup",
   "version": "1.0.0",
   "description": "React component to select & test audio / video devices through the browser API",
-  "main": "src/index.js",
   "module": "esm/index.js",
   "scripts": {
-    "build": "babel src/ --out-dir esm/ --ignore **/__tests__,**/__mocks__ --copy-files",
+    "build": "NODE_ENV=production babel src/ --out-dir esm/ --ignore **/__tests__,**/__mocks__ --copy-files",
     "clean": "rimraf esm",
     "prepublishOnly": "yarn run clean && yarn run build",
     "standalone": "webpack-dev-server --hot"
@@ -26,18 +25,18 @@
     "camera",
     "react-component"
   ],
-  "browserslist": [
-    "last 1 Chrome version"
-  ],
   "author": "lowlandjuju",
   "license": "MIT",
+  "browserslist": [
+    "since 2017-06"
+  ],
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "classnames": "^2.3.1",
     "prop-types": "^15.7.2",
-    "react": "^17.0.1",
+    "react": "^16.13.1",
     "react-device-detect": "^1.17.0",
-    "react-dom": "^17.0.1",
+    "react-dom": "^16.13.1",
     "react-use-cookie": "^1.2.1",
     "styled-components": "^5.2.3"
   },

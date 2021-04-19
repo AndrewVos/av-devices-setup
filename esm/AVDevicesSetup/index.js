@@ -1,25 +1,19 @@
 import { AVDeviceProvider } from './AVDeviceProvider';
 import AVDevicesSetup from './AVDevicesSetup';
 
-const App = ({
-  requiredDevices,
-  avDevices,
-  onChange,
-  persist,
-  userOptions
-}) => {
+var App = function App(_ref) {
+  var requiredDevices = _ref.requiredDevices,
+      avDevices = _ref.avDevices,
+      onChange = _ref.onChange,
+      persist = _ref.persist,
+      userOptions = _ref.userOptions;
   return /*#__PURE__*/React.createElement(AVDeviceProvider, null, /*#__PURE__*/React.createElement(AVDevicesSetup, {
-    requiredDevices,
-    avDevices,
-    onChange,
-    persist,
-    userOptions
+    requiredDevices: requiredDevices,
+    avDevices: avDevices,
+    onChange: onChange,
+    persist: persist,
+    userOptions: userOptions
   }));
 };
 
-_c = App;
 export default App;
-
-var _c;
-
-$RefreshReg$(_c, "App");

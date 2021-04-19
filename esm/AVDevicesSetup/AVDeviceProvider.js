@@ -1,45 +1,36 @@
-var _s = $RefreshSig$();
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 import { createContext } from 'react';
 import { validateDevice } from '../helpers';
-const AVDeviceContext = /*#__PURE__*/createContext();
-const {
-  Provider,
-  Consumer
-} = AVDeviceContext;
+var AVDeviceContext = /*#__PURE__*/createContext();
+var Provider = AVDeviceContext.Provider,
+    Consumer = AVDeviceContext.Consumer;
 
-const AVDeviceProvider = ({
-  children
-}) => {
-  _s();
+var AVDeviceProvider = function AVDeviceProvider(_ref) {
+  var children = _ref.children;
 
-  const [avData, setAvData] = useState({
+  var _useState = useState({
     configuredDevices: [],
     requiredDevices: []
-  });
+  }),
+      avData = _useState[0],
+      setAvData = _useState[1];
 
-  const upsertDevice = device => {
+  var upsertDevice = function upsertDevice(device) {
     if (!!device && validateDevice(device)) {
-      setAvData({ ...avData,
+      setAvData(_extends({}, avData, {
         configuredDevices: _.unionBy([device], avData.configuredDevices, 'kind')
-      });
+      }));
     }
   };
 
   return /*#__PURE__*/React.createElement(Provider, {
     value: {
-      avData,
-      setAvData,
-      upsertDevice
+      avData: avData,
+      setAvData: setAvData,
+      upsertDevice: upsertDevice
     }
   }, children);
 };
 
-_s(AVDeviceProvider, "CrvzAteCFjcpEm8BUCWfbMqlMxk=");
-
-_c = AVDeviceProvider;
 export { AVDeviceProvider, Consumer as AVDeviceContextConsumer, AVDeviceContext };
-
-var _c;
-
-$RefreshReg$(_c, "AVDeviceProvider");

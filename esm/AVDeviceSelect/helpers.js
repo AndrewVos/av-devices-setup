@@ -4,32 +4,38 @@
  * @param medium - string: Web media device kind, e.g. 'audioinput'
  * @returns {Promise<MediaDeviceInfo[]>}
  */
-const getMediaDevicesList = medium => {
-  const devices = navigator.mediaDevices.enumerateDevices();
+var getMediaDevicesList = function getMediaDevicesList(medium) {
+  var devices = navigator.mediaDevices.enumerateDevices();
 
   if (medium) {
-    return devices.then(devices => devices.filter(device => device.kind.includes(medium) && device.deviceId !== 'default').reverse());
+    return devices.then(function (devices) {
+      return devices.filter(function (device) {
+        return device.kind.includes(medium) && device.deviceId !== 'default';
+      }).reverse();
+    });
   } else {
     return devices;
   }
 };
 
-const getPermissions = required => navigator.mediaDevices.getUserMedia(required).catch(err => err);
+var getPermissions = function getPermissions(required) {
+  return navigator.mediaDevices.getUserMedia(required)["catch"](function (err) {
+    return err;
+  });
+};
 
-const reduceMediaDeviceInfo = deviceInfo => {
-  const {
-    deviceId,
-    kind,
-    label
-  } = deviceInfo;
+var reduceMediaDeviceInfo = function reduceMediaDeviceInfo(deviceInfo) {
+  var deviceId = deviceInfo.deviceId,
+      kind = deviceInfo.kind,
+      label = deviceInfo.label;
   return {
-    deviceId,
-    kind,
-    label
+    deviceId: deviceId,
+    kind: kind,
+    label: label
   };
 };
 
-const getMediaLabel = medium => {
+var getMediaLabel = function getMediaLabel(medium) {
   switch (medium) {
     case 'audioinput':
       return 'Microphone';
