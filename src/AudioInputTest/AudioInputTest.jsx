@@ -5,7 +5,7 @@ import { playAudioBlob, recordAudioToBlob } from './web_media'
 const TEST_PERIOD = 5 * 1000 // milliseconds
 const ANIMATE_STEP_SIZE = 3 // % of complete
 
-const AudioInputTest = ({ device, onChange, constraints }) => {
+const AudioInputTest = ({ device, onChange, constraints, showProgress = true }) => {
   const [progress, setProgress] = useState(0)
   const [testState, setTestState] = useState(null)
   const [testAudio, setTestAudio] = useState(null)
@@ -82,9 +82,11 @@ const AudioInputTest = ({ device, onChange, constraints }) => {
           onClick={testState ? cancelTest : beginTest}
         />
       </div>
-      <div className="column remaining">
-        <AudioInputTestProgress progress={progress} testState={testState} />
-      </div>
+      {showProgress && (
+        <div className="column remaining">
+          <AudioInputTestProgress progress={progress} testState={testState} />
+        </div>
+      )}
     </div>
   )
 }

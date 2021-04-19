@@ -6,7 +6,7 @@ import { AVDeviceContext } from './AVDeviceProvider'
 import VideoFeed from '../VideoInputFeed/VideoFeed'
 import AudioInputVolumeMonitor from '../AudioInputVolumeMonitor/AudioInputVolumeMonitor'
 import DeviceSelection from './DeviceSelection'
-import AudioInputTestContainer from '../AudioInputTest/AudioInputTestContainer'
+import { AudioInputTestContainer } from '../AudioInputTest'
 import { validateConfig } from './helpers'
 
 /**
@@ -16,7 +16,7 @@ import { validateConfig } from './helpers'
  * @param initConfig - Array of MediaDevices [{ deviceId, etc... }]
  * @param onChange - Function, runs every time a new device is selected
  * @param persist - Boolean, sets whether setup is stored and retrieved from cookie
- * @param options - Object { styles: { containerPadding: 16, soundmeterColor: '#00FF00' } }
+ * @param options - Object, params can be found in ./constants#DEFAULT_OPTIONS }
  * @returns {JSX.Element}
  * @constructor
  */
