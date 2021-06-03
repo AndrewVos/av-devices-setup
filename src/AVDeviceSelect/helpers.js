@@ -31,6 +31,8 @@ const getMediaLabel = (medium) => {
       return 'Microphone'
     case 'videoinput':
       return 'Webcam'
+    case 'audiooutput':
+      return 'Speaker'
     default:
       return 'Device'
   }

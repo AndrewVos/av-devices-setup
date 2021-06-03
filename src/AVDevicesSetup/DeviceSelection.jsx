@@ -34,6 +34,15 @@ const DeviceSelection = ({ preselect }) => {
           />
         </Grid>
       )}
+      {avData.requiredDevices.includes('audiooutput') && (
+        <Grid item xs>
+          <DeviceSelect
+            medium="audiooutput"
+            onChange={upsertDevice}
+            preselect={getPreselect('audiooutput')}
+          />
+        </Grid>
+      )}
     </Grid>
   )
 }
