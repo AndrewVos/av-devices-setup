@@ -25,7 +25,7 @@ import 'av-devices-setup/styles.css'
         }}
       />
 ```
-
+`requiredDevices` can be any of: audioinput, audiooutput, videoinput
 
 ### Customisation
 Current options, passed in via `options` prop:
