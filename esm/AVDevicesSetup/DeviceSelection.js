@@ -33,6 +33,13 @@ const DeviceSelection = (_ref) => {
     medium: "audioinput",
     onChange: upsertDevice,
     preselect: getPreselect('audioinput')
+  })), avData.requiredDevices.includes('audiooutput') && /*#__PURE__*/React.createElement(Grid, {
+    item: true,
+    xs: true
+  }, /*#__PURE__*/React.createElement(DeviceSelect, {
+    medium: "audiooutput",
+    onChange: upsertDevice,
+    preselect: getPreselect('audiooutput')
   })));
 };
 
