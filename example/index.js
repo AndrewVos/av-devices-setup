@@ -29,7 +29,7 @@ function HelloWorld() {
           <AVDevicesSetup
             {...{
               persist: false,
-              requiredDevices: ['audioinput', 'videoinput'],
+              requiredDevices: ['audioinput', 'videoinput', 'audiooutput'],
               userOptions: {
                 audioTest: { expanded: true },
               },
