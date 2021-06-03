@@ -41,7 +41,13 @@ const DeviceSelect = (_ref) => {
   useEffect(() => {
     init().then(result => {
       if (result) getAvailableDevices().then(devices => {
-        if (preselect) setSelected(preselect);else setSelected(devices[0]);
+        const validDeviceIds = devices.map(d => d.deviceId);
+
+        if (preselect && validDeviceIds.includes(preselect.deviceId)) {
+          setSelected(preselect);
+        } else {
+          setSelected(devices[0]);
+        }
       });
       navigator.mediaDevices.addEventListener('devicechange', () => {
         getAvailableDevices().then(devices => {
