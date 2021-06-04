@@ -8,7 +8,7 @@ const getMediaDevicesList = medium => {
   const devices = navigator.mediaDevices.enumerateDevices();
 
   if (medium) {
-    return devices.then(devices => devices.filter(device => device.kind.includes(medium) && device.deviceId !== 'default').reverse());
+    return devices.then(devices => devices.filter(device => device.kind.includes(medium) && device.deviceId !== 'default'));
   } else {
     return devices;
   }

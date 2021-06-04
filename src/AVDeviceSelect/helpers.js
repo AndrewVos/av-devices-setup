@@ -10,7 +10,6 @@ const getMediaDevicesList = (medium) => {
     return devices.then((devices) =>
       devices
         .filter((device) => device.kind.includes(medium) && device.deviceId !== 'default')
-        .reverse()
     )
   } else {
     return devices
