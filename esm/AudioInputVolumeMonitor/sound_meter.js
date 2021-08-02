@@ -41,11 +41,6 @@ export function createAudioMeter(audioContext, clipLevel, averaging, clipLag) {
     return this.clipping;
   };
 
-  processor.shutdown = function () {
-    this.disconnect();
-    this.onaudioprocess = null;
-  };
-
   return processor;
 }
 
@@ -64,6 +59,15 @@ const getSoundMeter = async (_ref) => {
   const source = audioCtx.createMediaStreamSource(stream);
   const meter = createAudioMeter(audioCtx);
   source.connect(meter);
+
+  meter.shutdown = () => {
+    meter.disconnect();
+    meter.onaudioprocess = null;
+    stream.getAudioTracks().forEach(track => {
+      track.stop();
+    });
+  };
+
   return meter;
 };
 
