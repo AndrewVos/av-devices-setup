@@ -37,10 +37,13 @@ const recordAudioToBlob = ({ deviceId, length, constraints }) => {
  * @param blob - an audio blob
  * @returns {[Promise<unknown>, cancel]}
  */
-const playAudioBlob = (blob) => {
+const playAudioBlob = (blob, outputSinkId) => {
   const url = URL.createObjectURL(blob)
   const audio = new Audio()
   audio.src = url
+  if (outputSinkId) {
+    audio.setSinkId(outputSinkId)
+  }
   audio.play()
 
   const playing = new Promise((resolve) => {
