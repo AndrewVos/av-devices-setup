@@ -57,8 +57,15 @@ class AudioInputVolumeMonitor extends React.Component {
     }
   }
 
+  stopMonitoring() {
+    if (this.state.soundMeter) {
+      this.state.soundMeter.shutdown()
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.state.pollRef)
+    this.stopMonitoring()
   }
 
   initMonitoring() {
@@ -73,7 +80,7 @@ class AudioInputVolumeMonitor extends React.Component {
             clipping: meter.checkClipping(),
           })
         }, T_INTERVAL)
-        this.setState({ pollRef: ref, buffer: [] })
+        this.setState({ pollRef: ref, buffer: [], soundMeter: meter })
       })
     }
   }

@@ -43,8 +43,15 @@ class AudioInputVolumeMonitor extends React.Component {
     }
   }
 
+  stopMonitoring() {
+    if (this.state.soundMeter) {
+      this.state.soundMeter.shutdown();
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.state.pollRef);
+    this.stopMonitoring();
   }
 
   initMonitoring() {
@@ -68,7 +75,8 @@ class AudioInputVolumeMonitor extends React.Component {
         }, T_INTERVAL);
         this.setState({
           pollRef: ref,
-          buffer: []
+          buffer: [],
+          soundMeter: meter
         });
       });
     }

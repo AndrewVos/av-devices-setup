@@ -22,23 +22,21 @@ const Feed = styled.video`
 
 const VideoFeed = ({ device, maxHeight }) => {
   const [status, setStatus] = useState('loading')
-  const [stream, setStream] = useState()
+  const [stream, setStream] = useState(null)
 
-  function stopMediaTracks() {
-    if (!!stream)
-      stream.getTracks().forEach((track) => {
+  const stopMediaTracks = () => {
+    if (window.avDevicesVideoStream) {
+      window.avDevicesVideoStream.getTracks().forEach(track => {
         track.stop()
       })
+    }
   }
 
   useEffect(() => {
-    return () => {
-      stopMediaTracks()
-    }
+    return stopMediaTracks
   }, [])
 
   useEffect(() => {
-    stopMediaTracks()
     if (device && validateDevice(device)) {
       navigator.mediaDevices
         .getUserMedia({ video: { deviceId: { exact: device.deviceId } } })
@@ -48,6 +46,8 @@ const VideoFeed = ({ device, maxHeight }) => {
           video.addEventListener('canplay', () => {
             video.play()
           })
+          console.log(videoStream)
+          window.avDevicesVideoStream = videoStream;
           setStream(videoStream)
           setStatus('streaming')
         })

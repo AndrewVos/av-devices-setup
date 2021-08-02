@@ -14,27 +14,40 @@ const Modal = styled.div`
 `
 
 function HelloWorld() {
-  const [showSetup] = React.useState(true)
+  const [showSetup, setShowSetup] = React.useState(true)
+  const handleComplete = () => {
+    setShowSetup(false)
+  }
+
+  const handleCancel = () => {
+    setShowSetup(false)
+  }
 
   return (
     <div className="example-container">
-      {/* <button
-        style={{ position: 'absolute', left: 0, top: 0, zIndex: 100000 }}
-        onClick={() => setShowSetup(!showSetup)}
-      >
-        Toggle
-      </button> */}
+      {
+        <button
+          style={{ position: 'absolute', left: 0, top: 0, zIndex: 100000 }}
+          onClick={() => setShowSetup(!showSetup)}
+        >
+          Toggle
+        </button>
+      }
       <Backdrop open={showSetup} style={{ zIndex: 1000 }}>
         <Modal>
-          <AVDevicesSetup
-            {...{
-              persist: false,
-              requiredDevices: ['audioinput', 'videoinput', 'audiooutput'],
-              userOptions: {
-                audioTest: { expanded: true },
-              },
-            }}
-          />
+          {showSetup && (
+            <AVDevicesSetup
+              {...{
+                persist: false,
+                requiredDevices: ['audioinput', 'videoinput', 'audiooutput'],
+                userOptions: {
+                  audioTest: { expanded: true },
+                },
+                onComplete: handleComplete,
+                onCancel: handleCancel,
+              }}
+            />
+          )}
         </Modal>
       </Backdrop>
     </div>
