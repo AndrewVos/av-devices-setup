@@ -92,6 +92,7 @@ const AVDevicesSetup = (_ref) => {
     item: true
   }, /*#__PURE__*/React.createElement(AudioInputTestContainer, {
     device: getDevice('audioinput'),
+    outputDevice: getDevice('audiooutput'),
     expanded: options == null ? void 0 : (_options$audioTest = options.audioTest) == null ? void 0 : _options$audioTest.expanded,
     style: {
       background: options.audioTest.background

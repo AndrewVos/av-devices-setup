@@ -9,6 +9,7 @@ const ANIMATE_STEP_SIZE = 3; // % of complete
 const AudioInputTest = (_ref) => {
   let {
     device,
+    outputDevice,
     onChange,
     constraints,
     hideProgress
@@ -73,7 +74,7 @@ const AudioInputTest = (_ref) => {
   };
 
   const playTestAudio = () => {
-    const [playing, cancel] = playAudioBlob(testAudio);
+    const [playing, cancel] = playAudioBlob(testAudio, outputDevice == null ? void 0 : outputDevice.deviceId);
     setCancelMedia(() => cancel);
     playing.then(() => {
       setTestState('default');

@@ -11,6 +11,7 @@ const Container = styled.div(_templateObject || (_templateObject = _taggedTempla
 const AudioInputTestContainer = (_ref) => {
   let {
     device,
+    outputDevice,
     expanded,
     style
   } = _ref;
@@ -40,6 +41,7 @@ const AudioInputTestContainer = (_ref) => {
     }
   }, /*#__PURE__*/React.createElement(AudioInputTest, {
     device,
+    outputDevice,
     hideProgress: !expanded
   }))));
 };
