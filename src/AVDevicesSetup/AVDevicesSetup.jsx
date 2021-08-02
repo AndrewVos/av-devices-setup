@@ -45,7 +45,7 @@ const AVDevicesSetup = ({
   }, [avData])
 
   function getDevice(kind) {
-    return avData?.configuredDevices.filter((device) => device.kind === kind)[0]
+    return avData?.configuredDevices.filter(device => device.kind === kind)[0]
   }
 
   function getCookieConfig() {
@@ -84,6 +84,7 @@ const AVDevicesSetup = ({
         <Grid item>
           <AudioInputTestContainer
             device={getDevice('audioinput')}
+            outputDevice={getDevice('audiooutput')}
             expanded={options?.audioTest?.expanded}
             style={{ background: options.audioTest.background }}
           />

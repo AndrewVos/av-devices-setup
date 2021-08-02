@@ -6,7 +6,7 @@ import { playAudioBlob, recordAudioToBlob } from './web_media'
 const TEST_PERIOD = 5 * 1000 // milliseconds
 const ANIMATE_STEP_SIZE = 3 // % of complete
 
-const AudioInputTest = ({ device, onChange, constraints, hideProgress }) => {
+const AudioInputTest = ({ device, outputDevice, onChange, constraints, hideProgress }) => {
   const [progress, setProgress] = useState(0)
   const [testState, setTestState] = useState('default')
   const [testAudio, setTestAudio] = useState(null)
@@ -63,7 +63,7 @@ const AudioInputTest = ({ device, onChange, constraints, hideProgress }) => {
   }
 
   const playTestAudio = () => {
-    const [playing, cancel] = playAudioBlob(testAudio)
+    const [playing, cancel] = playAudioBlob(testAudio, outputDevice?.deviceId)
     setCancelMedia(() => cancel)
     playing.then(() => {
       setTestState('default')

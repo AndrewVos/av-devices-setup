@@ -8,7 +8,7 @@ const Container = styled.div`
   margin-top: 20px;
 `
 
-const AudioInputTestContainer = ({ device, expanded, style }) => {
+const AudioInputTestContainer = ({ device, outputDevice, expanded, style }) => {
   const columnLayout = isMobile || expanded
 
   return (
@@ -28,7 +28,7 @@ const AudioInputTestContainer = ({ device, expanded, style }) => {
           </div>
         </Grid>
         <Grid item container xs style={{ paddingLeft: columnLayout ? 5 : 8 }}>
-          <AudioInputTest {...{ device, hideProgress: !expanded }} />
+          <AudioInputTest {...{ device, outputDevice, hideProgress: !expanded }} />
         </Grid>
       </Grid>
     </Container>
