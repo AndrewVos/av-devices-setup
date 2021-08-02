@@ -14,22 +14,20 @@ const VideoFeed = (_ref) => {
     maxHeight
   } = _ref;
   const [status, setStatus] = useState('loading');
-  const [stream, setStream] = useState();
+  const [stream, setStream] = useState(null);
 
-  function stopMediaTracks() {
-    if (!!stream) stream.getTracks().forEach(track => {
-      track.stop();
-    });
-  }
+  const stopMediaTracks = () => {
+    if (window.avDevicesVideoStream) {
+      window.avDevicesVideoStream.getTracks().forEach(track => {
+        track.stop();
+      });
+    }
+  };
 
   useEffect(() => {
-    return () => {
-      stopMediaTracks();
-    };
+    return stopMediaTracks;
   }, []);
   useEffect(() => {
-    stopMediaTracks();
-
     if (device && validateDevice(device)) {
       navigator.mediaDevices.getUserMedia({
         video: {
@@ -43,6 +41,8 @@ const VideoFeed = (_ref) => {
         video.addEventListener('canplay', () => {
           video.play();
         });
+        console.log(videoStream);
+        window.avDevicesVideoStream = videoStream;
         setStream(videoStream);
         setStatus('streaming');
       }).catch(function () {
