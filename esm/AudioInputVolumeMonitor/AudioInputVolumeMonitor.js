@@ -27,6 +27,7 @@ class AudioInputVolumeMonitor extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.device !== prevProps.device) {
+      this.stopMonitoring();
       this.initMonitoring();
     }
 
