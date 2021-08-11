@@ -23,6 +23,10 @@ function HelloWorld() {
     setShowSetup(false)
   }
 
+  const handleChange = (devices) => {
+    console.log("Handling device change:", devices)
+  }
+
   return (
     <div className="example-container">
       {
@@ -43,6 +47,7 @@ function HelloWorld() {
                 userOptions: {
                   audioTest: { expanded: true },
                 },
+                onChange: handleChange,
                 onComplete: handleComplete,
                 onCancel: handleCancel,
               }}
